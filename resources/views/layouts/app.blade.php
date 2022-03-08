@@ -53,7 +53,7 @@
                             @endif
                         @else
                             <li class="nav-item ">
-                                <a id="navbarDropdown" class="nav-link" href="#">
+                                <a id="navbarDropdown" class="nav-link" href="{{ route('home')}}">
                                     Presenze
                                 </a>
                             </li>
@@ -78,11 +78,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
-                                       altro
+                                    <a class="dropdown-item" href="{{ route('collaborators.index') }}">
+                                       Collaboratori
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('utenti') }}">
-                                        utenti
+                                    <a class="dropdown-item" href="{{ route('utenti.index') }}">
+                                        Utenti
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

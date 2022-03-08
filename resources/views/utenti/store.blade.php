@@ -5,6 +5,15 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Crea utente</div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                         <form action="{{route('utenti.store')}}" method="POST">
                             @csrf

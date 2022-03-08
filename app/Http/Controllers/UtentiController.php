@@ -21,16 +21,23 @@ class UtentiController extends Controller
 
     public function update(Request $request, User $utente)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'level' => 'required',
+        ]);
+
         $utente->update($request->all());
 
-        return redirect()->route('utenti');
+        return redirect()->route('utenti.index');
     }
 
     public function destroy( User $utente)
     {
         $utente->delete();
 
-        return redirect()->route('utenti');
+        return redirect()->route('utenti.index');
     }
 
     public function create()
@@ -40,9 +47,16 @@ class UtentiController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'level' => 'required',
+        ]);
+
         User::create($request->all());
 
-        return redirect()->route('utenti');
+        return redirect()->route('utenti.index');
 
     }
 

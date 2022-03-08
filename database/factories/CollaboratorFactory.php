@@ -3,13 +3,10 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Collaborators;
+use App\Models\Collaborator;
 
-class CollaboratorsFactory extends Factory
+class CollaboratorFactory extends Factory
 {
-
-    protected $model = Collaborators::class;
-
     /**
      * Define the model's default state.
      *
@@ -18,12 +15,13 @@ class CollaboratorsFactory extends Factory
     public function definition()
     {
         return [
-            'nome' => $this->faker->firstName(),
+            'nome' => $this->faker->firstNameMale(),
             'cognome' => $this->faker->lastName(),
             'email' => $this->faker->email(),
-            'telefono' => $this->faker->phoneNumber(),
+            'telefono' => 3254465,
             'citta' => $this->faker->city(),
             'indirizzo' => $this->faker->address(),
+            'CAP' => '64025',
             'intera_giornata' => $this->faker->randomDigit(),
             'mezza_giornata' => $this->faker->randomDigit(),
             'giornata_estero' => $this->faker->randomDigit(),
