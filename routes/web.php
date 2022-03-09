@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UtentiController;
-use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\CollaboratoriController;
+use App\Http\Controllers\PresenzeController;
+
 
 
 /*
@@ -18,28 +20,32 @@ use App\Http\Controllers\CollaboratorController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 // Utenti
-Route::get('user_index', [UtentiController::class, 'index'])->name('utenti.index');
-Route::get('user/{utente}', [UtentiController::class, 'edit'])->name('utenti.edit');
-Route::get('user_create', [UtentiController::class, 'create'])->name('utenti.create');
-Route::put('user/{utente}', [UtentiController::class, 'update'])->name('utenti.update');
-Route::delete('user/{utente}', [UtentiController::class, 'destroy'])->name('utenti.destroy');
-Route::post('user/store', [UtentiController::class, 'store'])->name('utenti.store');
+Route::get('utenti_index', [UtentiController::class, 'index'])->name('utenti.index');
+Route::get('utenti/{utente}', [UtentiController::class, 'edit'])->name('utenti.edit');
+Route::get('utenti_create', [UtentiController::class, 'create'])->name('utenti.create');
+Route::put('utenti/{utente}', [UtentiController::class, 'update'])->name('utenti.update');
+Route::delete('utenti/{utente}', [UtentiController::class, 'destroy'])->name('utenti.destroy');
+Route::post('utenti_store', [UtentiController::class, 'store'])->name('utenti.store');
 
 
 // Collaboratori
-Route::get('collaborator', [CollaboratorController::class, 'index'])->name('collaborators.index');
-Route::get('collaborator/{collaborator}', [CollaboratorController::class, 'edit'])->name('collaborators.edit');
-Route::get('collaborator_create', [CollaboratorController::class, 'create'])->name('collaborators.create');
-Route::put('collaborator/{collaborator}', [CollaboratorController::class, 'update'])->name('collaborators.update');
-Route::delete('collaborator/{collaborator}', [CollaboratorController::class, 'destroy'])->name('collaborators.destroy');
-Route::post('collaborator/store', [CollaboratorController::class, 'store'])->name('collaborators.store');
+Route::get('collaboratori', [CollaboratoriController::class, 'index'])->name('collaboratori.index');
+Route::get('collaboratori/{collaboratore}', [CollaboratoriController::class, 'edit'])->name('collaboratori.edit');
+Route::get('collaboratoriCreate*****', [CollaboratoriController::class, 'create'])->name('collaboratori.create');
+Route::put('collaboratori/{collaboratore}', [CollaboratoriController::class, 'update'])->name('collaboratori.update');
+Route::delete('collaboratori/{collaboratore}', [CollaboratoriController::class, 'destroy'])->name('collaboratori.destroy');
+Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->name('collaboratori.store');
+
+
+// Presenze
+Route::get('presenze/{data}', [PresenzeController::class, 'index'])->name('presenze.index');
+Route::get('presenzeCreate*****', [PresenzeController::class, 'create'])->name('presenze.create');
+Route::delete('presenze/{presenza}', [PresenzeController::class, 'destroy'])->name('presenze.destroy');
+Route::post('presenze_store/{idCollaboratore}', [PresenzeController::class, 'store'])->name('presenze.store');
+

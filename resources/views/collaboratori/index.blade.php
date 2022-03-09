@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <a class="btn btn-success" href="{{ route('collaborators.create') }}">Nuovo Collaboratore</a>
+        <a class="btn btn-success" href="{{ route('collaboratori.create') }}">Nuovo Collaboratore</a>
         <table class="table">
             <thead>
               <tr>
@@ -13,14 +13,14 @@
               </tr>
             </thead>
             <tbody>
-                @foreach ($collaborators as $collaborator)
+                @foreach ($collaboratori as $collaboratore)
                 <tr>
-                    <th scope="row">{{$collaborator->id}}</th>
-                    <td>{{$collaborator->nome}}</td>
-                    <td>{{$collaborator->email}}</td>
-                        <form action="{{route('collaborators.destroy', $collaborator->id)}}" method="POST">
+                    <th scope="row">{{$collaboratore->id}}</th>
+                    <td>{{$collaboratore->nome}}</td>
+                    <td>{{$collaboratore->email}}</td>
+                        <form action="{{route('collaboratori.destroy', $collaboratore->id)}}" method="POST">
                             <td>
-                                <a class="btn btn-primary" href="{{ route('collaborators.edit', $collaborator->id) }}">Modifica</a>
+                                <a class="btn btn-primary" href="{{ route('collaboratori.edit', $collaboratore->id) }}">Modifica</a>
                             </td>
                             @csrf
                             @method('DELETE')

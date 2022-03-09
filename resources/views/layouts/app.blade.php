@@ -20,6 +20,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+   @php
+    use Carbon\Carbon;
+
+    $oggi = Carbon::now();
+
+    $data = $oggi->year . '-' . $oggi->month;
+
+   @endphp
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -53,7 +61,7 @@
                             @endif
                         @else
                             <li class="nav-item ">
-                                <a id="navbarDropdown" class="nav-link" href="{{ route('home')}}">
+                                <a id="navbarDropdown" class="nav-link" href="{{ route('presenze.index', $data )}}">
                                     Presenze
                                 </a>
                             </li>
@@ -78,7 +86,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('collaborators.index') }}">
+                                    <a class="dropdown-item" href="{{ route('collaboratori.index') }}">
                                        Collaboratori
                                     </a>
                                     <a class="dropdown-item" href="{{ route('utenti.index') }}">

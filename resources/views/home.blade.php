@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
+    ciao
+    {{-- <div class="row">
         <div class="col-12">
             <div class="nav d-block text-center">
                 <a href="">
@@ -104,6 +105,6 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection

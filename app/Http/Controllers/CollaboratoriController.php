@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\Collaborator;
 
 
-class CollaboratorController extends Controller
+class CollaboratoriController extends Controller
 {
     public function index()
     {
-        $collaborators = Collaborator::all();
+        $collaboratori = Collaborator::all();
 
-        return view('collaborators.index', compact('collaborators'));
+        return view('collaboratori.index', compact('collaboratori'));
     }
 
-    public function edit(Collaborator $collaborator)
+    public function edit(Collaborator $collaboratore)
     {
-        return view('collaborators.edit', compact('collaborator'));
+        return view('collaboratori.edit', compact('collaboratore'));
     }
 
-    public function update(Request $request, Collaborator $collaborator)
+    public function update(Request $request, Collaborator $collaboratore)
     {
         $request->validate ([
             'nome' => 'required',
@@ -36,21 +36,21 @@ class CollaboratorController extends Controller
             'giornata_formazione' => 'required'
         ]);
 
-        $collaborator->update($request->all());
+        $collaboratore->update($request->all());
 
-        return redirect()->route('collaborators.index');
+        return redirect()->route('collaboratori.index');
     }
 
-    public function destroy( Collaborator $collaborator)
+    public function destroy( Collaborator $collaboratore)
     {
-        $collaborator->delete();
+        $collaboratore->delete();
 
-        return redirect()->route('collaborators.index');
+        return redirect()->route('collaboratori.index');
     }
 
     public function create()
     {
-        return view('collaborators.store');
+        return view('collaboratori.store');
     }
 
     public function store(Request $request)
@@ -71,8 +71,7 @@ class CollaboratorController extends Controller
 
         Collaborator::create($request->all());
 
-        return redirect()->route('collaborators.index');
-
+        return redirect()->route('collaboratori.index');
     }
 
 }
