@@ -46,7 +46,7 @@
                                                     {{-- qui passo il nome e l'id selezionati --}}
                                                     <td>{{$collaboratore->nome}}</td>
                                                     @for ($i=1; $i <= $data->daysInMonth; $i++)
-                                                        <td scope="col" class="p-0 childDiv aggiungiNome" data-nome="{{$collaboratore->nome}}">
+                                                        <td scope="col" class="p-0 childDiv aggNomeCollaboratore" data-nome="{{$collaboratore->nome}}">
                                                             @php
                                                                 if ($i < 10) {
                                                                     $giorno = '0'. $i;
@@ -60,10 +60,10 @@
                                                                     $mese = $meseNumero;
                                                                 }
 
-                                                                $dateCalendario = $anno . '-' . $mese . '-' . $giorno;
+                                                                $dataCella = $anno . '-' . $mese . '-' . $giorno;
 
-                                                                $dateCalendarioId[$anno . '-' . $mese . '-' . $giorno][$collaboratore->id] = 'hello';
-                                                                //dd($dateCalendarioId);
+                                                                $dataCellaId[$anno . '-' . $mese . '-' . $giorno][$collaboratore->id] = 'hello';
+                                                               // dd($dataCellaId);
                                                             @endphp
 
                                                             {{-- Preprendere il valore dell'array --}}
@@ -73,7 +73,7 @@
                                                                 @endforeach
                                                             @endforeach --}}
 
-                                                            {{-- @if (array_key_exists($dateCalendario, $arrPresenze) )
+                                                            {{-- @if (array_key_exists($dataCella, $arrPresenze) )
                                                                 @foreach ($arrPresenze as $item)
                                                                     @if (array_key_exists($collaboratore->id, $item))
                                                                     {{}}
@@ -81,13 +81,13 @@
                                                                 @endforeach
                                                             @endif --}}
 
-                                                            @if (array_key_exists($dateCalendario, $arrPresenze) )
+                                                            {{-- @if (array_key_exists($dataCella, $arrPresenze) )
                                                                 {{'ciao'}}
-                                                            @endif
+                                                            @endif --}}
 
                                                             <!-- Button trigger modal -->
-                                                            {{-- {{array_key_exists($dateCalendario, $arrPresenze) ? "color" : ''}} --}}
-                                                            <div data-bs-toggle="modal" class="add p-2 prendiDati" data-id="{{$collaboratore->id}}" data-data="{{$dateCalendario}}" data-bs-target="#exampleModal">&nbsp;</div>
+                                                            {{-- {{array_key_exists($dataCella, $arrPresenze) ? "color" : ''}} --}}
+                                                            <div data-bs-toggle="modal" class="add p-2 prendiDati" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#exampleModal">&nbsp;</div>
                                                         </td>
                                                     @endfor
                                                 </tr>
@@ -106,7 +106,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="aggiungiNomeTitolo"></h5>
+                        <h5 class="modal-title" id="aggNomeCollModale"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -194,9 +194,9 @@
                 }
             });
 
-            // Prendi il dato dalla classe .aggiungiNome e aggiungi all'id del form modale
-            $('.aggiungiNome').on('click', function () {
-                $('#aggiungiNomeTitolo').text($(this).data('nome'));
+            // Prendi il dato dalla classe .aggNomeCollaboratore e aggiungi all'id del form modale
+            $('.aggNomeCollaboratore').on('click', function () {
+                $('#aggNomeCollModale').text($(this).data('nome'));
             });
 
             // Invio dati tramite ajax
@@ -257,13 +257,13 @@
             // Prendere i dati tramite ajax
             $(".prendiDati").click(function(){
 
-                $('#aggiungiDataInput').attr('value', $(this).data('data'));
-                $('#aggiungiDataSpan').text($(this).data('data'));
-                $('#aggiungiIdInput').attr('value', $(this).data('id'));
+                $('#aggiungiDataInput').attr('value', $(this).data('data-cella'));
+                $('#aggiungiDataSpan').text($(this).data('data-cella'));
+                $('#aggiungiIdInput').attr('value', $(this).data('id-collaboratore-cella'));
 
                 //prende il dato che si trova nella casella selezionata
-                let dataSelezionata = $(this).data('data');
-                let idCollaboratore =  $(this).data('id');
+                let dataSelezionata = $(this).data('data-cella');
+                let idCollaboratore =  $(this).data('id-collaboratore-cella');
 
                 $.ajax({
                     url: "/prendiDati",
@@ -304,12 +304,12 @@
 {{-- // $('.casella').on('click', function () {
     //     $('#aggiungiDataInput').attr('value', $(this).data('data'));
     //     $('#aggiungiDataSpan').text($(this).data('data'));
-    //     $('#aggiungiIdInput').attr('value', $(this).data('id'));
+    //     $('#aggiungiIdInput').attr('value', $(this).data('id-collaboratore-cella'));
     // });
 
     // // Aggiunta id collaboratore al tag input
     // $('.aggiungiId').on('click', function () {
-    //     $('#aggiungiIdInput').attr('value', $(this).data('id'));
+    //     $('#aggiungiIdInput').attr('value', $(this).data('id-collaboratore-cella'));
     // }); --}}
 
 
