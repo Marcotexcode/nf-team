@@ -21,9 +21,36 @@ class PresenzeController extends Controller
         $data = Carbon::createFromDate("$data");
 
 
+        // 1 - PROVA
+        $a = Collaborator::pluck('id')->toArray(); //a
+        $b = Presenza::pluck('data')->toArray(); //b
 
+        $presenza = [];
 
+        for ($i=0; $i < count($a); $i++) {
+            $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
+            for ($j=0; $j < count($data); $j++) {
+                $array = array($data[$j] => $a[$i]);
+                array_push($presenza, $array);
+            }
+        }
 
+        // dd($presenza);
+
+        // 2 - PROVA
+        $a = Collaborator::pluck('id')->toArray(); //a
+        $b = Presenza::pluck('data')->toArray(); //b
+
+        $presenza = [];
+
+        for ($i=0; $i < count($a); $i++) {
+            $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
+            for ($j=0; $j < count($data); $j++) {
+                $presenza[$data[$j]][$a[$i]] = 'null';
+            }
+        }
+
+        dd($presenza);
 
 
         //$presenza[$id][$data] = $presenze;
