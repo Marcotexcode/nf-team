@@ -20,8 +20,34 @@ class PresenzeController extends Controller
 
         $data = Carbon::createFromDate("$data");
 
+        dd($data);
 
-        // 1 - PROVA
+        // Marco ti scrivo tutti i passi da fare, ti metto i commenti tu scrivi il codice
+        //
+        // Prendere dalla tabella presenze tutti i record nel range di data che server (esempio: marzo 2022)
+        // $presenze = ........
+        // Ciclare ogni record trovato e usare la presenza per costruire un array che chiamiamo $arrPresenze[]
+        // che ha due indici. Il primo indice è la data della presenza, il secondo indice è l'id del collaboratore;
+        // il valore dell'array sarà l'intero record presenza che stai già ciclando.
+        //
+        // $arrPresenze = []
+        // foreach ($presenze as $presenza) {
+        //     QUI ASSEGNI $arrPresenze
+        // }
+        //
+        //  Finito, è tutto qui.  $arrPresenze va passato al blade ovviamente
+        //
+
+        $presenza = Presenza::whereBetween('data', ['2022-03-01', '2022-03-31'])->get();
+
+        $arrPresenze = [];
+        foreach ($presenza as $item) {
+            $arrPresenze[$item->data][$item->collaborator_id] = $item;
+        }
+
+        dd($arrPresenze);
+
+        // 2 - PROVA
         // $a = Collaborator::pluck('id')->toArray(); //a
         // $b = Presenza::pluck('data')->toArray(); //b
 
@@ -30,47 +56,13 @@ class PresenzeController extends Controller
         // for ($i=0; $i < count($a); $i++) {
         //     $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
         //     for ($j=0; $j < count($data); $j++) {
-        //         $array = array($data[$j] => $a[$i]);
-        //         array_push($presenza, $array);
+
+        //         $valorePresenza = Presenza::where('collaborator_id', $a[$i])->where('data',$data[$j])->get();
+        //         $presenza[$data[$j]][$a[$i]] = $valorePresenza;
         //     }
         // }
 
-        // dd($presenza);
-
-        
-        // Marco ti scrivo tutti i passi da fare, ti metto i commenti tu scrivi il codice
-        // 
-        // Prendere dalla tabella presenze tutti i record nel range di data che server (esempio: marzo 2022)
-        // $presenze = ........
-        // 
-        // Ciclare ogni record trovato e usare la presenza per costruire un array che chiamiamo $arrPresenze[]
-        // che ha due indici. Il primo indice è la data della presenza, il secondo indice è l'id del collaboratore;
-        // il valore dell'array sarà l'intero record presenza che stai già ciclando.
-        // 
-        // $arrPresenze = []
-        // foreach ($presenze as $presenza) {
-        //     QUI ASSEGNI $arrPresenze
-        // }
-        // 
-        //  Finito, è tutto qui.  $arrPresenze va passato al blade ovviamente
-        // 
-        
-        // 2 - PROVA
-        $a = Collaborator::pluck('id')->toArray(); //a
-        $b = Presenza::pluck('data')->toArray(); //b
-
-        $presenza = [];
-
-        for ($i=0; $i < count($a); $i++) {
-            $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
-            for ($j=0; $j < count($data); $j++) {
-
-                $valorePresenza = Presenza::where('collaborator_id', $a[$i])->where('data',$data[$j])->get();
-                $presenza[$data[$j]][$a[$i]] = $valorePresenza;
-            }
-        }
-
-        dd($presenza);
+        //dd($presenza);
 
 
         //$presenza[$id][$data] = $presenze;
@@ -79,8 +71,12 @@ class PresenzeController extends Controller
         $dataNext = $data->copy()->addMonth();
         $dataSuccessiva =  $dataNext->year . '-' . $dataNext->month;
 
+
         $dataSub = $data->copy()->subMonth();
         $dataPrecedente = $dataSub->year . '-' . $dataSub->month;
+
+        dd($dataPrecedente);
+
 
         $mesi[] = $data->englishMonth;
         $mesiNumero[] = $data->month;
