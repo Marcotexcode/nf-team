@@ -37,6 +37,24 @@ class PresenzeController extends Controller
 
         // dd($presenza);
 
+        
+        // Marco ti scrivo tutti i passi da fare, ti metto i commenti tu scrivi il codice
+        // 
+        // Prendere dalla tabella presenze tutti i record nel range di data che server (esempio: marzo 2022)
+        // $presenze = ........
+        // 
+        // Ciclare ogni record trovato e usare la presenza per costruire un array che chiamiamo $arrPresenze[]
+        // che ha due indici. Il primo indice è la data della presenza, il secondo indice è l'id del collaboratore;
+        // il valore dell'array sarà l'intero record presenza che stai già ciclando.
+        // 
+        // $arrPresenze = []
+        // foreach ($presenze as $presenza) {
+        //     QUI ASSEGNI $arrPresenze
+        // }
+        // 
+        //  Finito, è tutto qui.  $arrPresenze va passato al blade ovviamente
+        // 
+        
         // 2 - PROVA
         $a = Collaborator::pluck('id')->toArray(); //a
         $b = Presenza::pluck('data')->toArray(); //b
