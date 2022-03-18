@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Collaborator;
+use App\Models\Presenza;
+
 
 
 class CollaboratoriController extends Controller
@@ -11,6 +13,9 @@ class CollaboratoriController extends Controller
     public function index()
     {
         $collaboratori = Collaborator::all();
+
+        dd($prendiDatiCollaboratore);
+
 
         return view('collaboratori.index', compact('collaboratori'));
     }
@@ -48,10 +53,6 @@ class CollaboratoriController extends Controller
         return redirect()->route('collaboratori.index');
     }
 
-    public function create()
-    {
-        return view('collaboratori.store');
-    }
 
     public function store(Request $request)
     {

@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UtentiController;
 use App\Http\Controllers\CollaboratoriController;
 use App\Http\Controllers\PresenzeController;
+use App\Http\Controllers\RicevuteController;
+
 
 
 
@@ -47,5 +49,16 @@ Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->n
 Route::get('presenze/{data}', [PresenzeController::class, 'index'])->name('presenze.index');
 Route::get('presenzeCreate*****', [PresenzeController::class, 'create'])->name('presenze.create');
 Route::delete('presenze/{presenza}', [PresenzeController::class, 'destroy'])->name('presenze.destroy');
-Route::post('presenze_store/{idCollaboratore}', [PresenzeController::class, 'store'])->name('presenze.store');
+Route::post('presenze_store', [PresenzeController::class, 'store'])->name('presenze.store');
+
+
+
+// Ricevute
+Route::get('ricevute', [RicevuteController::class, 'index'])->name('ricevute.index');
+
+
+// Prendi i dati con ajax
+Route::get('prendiDati', [PresenzeController::class, 'prendiDati']);
+
+
 

@@ -24,4 +24,10 @@ class Collaborator extends Model
         'giornata_estero',
         'giornata_formazione'
     ];
+
+    public function presenze()
+    {
+        return $this->hasMany(Presenza::class);
+    }
+
 }

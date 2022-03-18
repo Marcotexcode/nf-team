@@ -7,17 +7,27 @@ use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Models\Presenza;
 use App\Models\Collaborator;
-
+use Illuminate\Support\Arr;
 
 class PresenzeController extends Controller
 {
     public function index($data)
     {
-        //Carbon::setLocale('it');
-
         $collaboratori = Collaborator::all();
 
-        $data = Carbon::createFromDate("$data"); //->locale('it');
+        $presenze = Presenza::all();
+
+
+        $data = Carbon::createFromDate("$data");
+
+
+
+
+
+
+
+        //$presenza[$id][$data] = $presenze;
+
 
         $dataNext = $data->copy()->addMonth();
         $dataSuccessiva =  $dataNext->year . '-' . $dataNext->month;
@@ -26,33 +36,45 @@ class PresenzeController extends Controller
         $dataPrecedente = $dataSub->year . '-' . $dataSub->month;
 
         $mesi[] = $data->englishMonth;
+        $mesiNumero[] = $data->month;
+        $giorni[] = $data->day;
+        $anni[] = $data->year;
 
-        return view('presenze.index', compact('collaboratori', 'mesi', 'data', 'dataSuccessiva', 'dataPrecedente'));
+        return view('presenze.index', compact('collaboratori', 'mesiNumero', 'arrayPresenzeCollaboratori', 'mesi', 'giorni', 'data', 'dataSuccessiva', 'dataPrecedente', 'anni', 'presenze', 'idCollaboratore'));
     }
 
-
-    public function create(Collaborator $collaboratore)
+    public function store(Request $request)
     {
-        return view('presenze.index', compact('collaboratore'));
-    }
+        $oggi = Carbon::now();
+        $data = $oggi->year . '-' . $oggi->month;
 
-    public function store(Request $request, $idCollaboratore)
-    {
-        dd($idCollaboratore);
         $presenza = new Presenza;
 
-        $presenza->data_inizio = $request->data_inizio;
-        $presenza->data_fine = $request->data_fine;
-        $presenza->collaborator_id = //$collaboratore->id;
-        $presenza->tipo_di_presenza = $request->tipo_di_presenza;
+        $presenza->data = $request->dataInizio;
+        $presenza->collaborator_id = $request->idColl;
+        $presenza->tipo_di_presenza = $request->tipoPresenza;
+        $presenza->importo = $request->importo;
         $presenza->luogo = $request->luogo;
         $presenza->descrizione = $request->descrizione;
-        $presenza->spese_rimborso = $request->spese_rimborso;
+        $presenza->spese_rimborso = $request->speseRimborso;
         $presenza->bonus = $request->bonus;
 
         $presenza->save();
 
-        return redirect()->route('presenze.index');
+        return response()->json();
+    }
+
+
+    public function prendiDati(Request $request)
+    {
+        $idCollaboratore = $request->idColl;
+        $dataSelezionata = $request->dataSel;
+        $ciao = 10;
+        $prendiDatiCollaboratore = Collaborator::where('id', $idCollaboratore)->get();
+
+        $prendiDatiPresenze = Presenza::where('data', $dataSelezionata)->where('collaborator_id', $idCollaboratore)->get();
+
+        return response()->json(array('prendiDatiCollaboratore' => $prendiDatiCollaboratore, 'prendiDatiPresenze' => $prendiDatiPresenze));
     }
 
 }

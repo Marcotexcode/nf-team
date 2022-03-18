@@ -19,6 +19,7 @@ class CreatePresencesTable extends Migration
             $table->date('data_inizio');
             $table->date('data_fine');
             $table->unsignedBigInteger('collaborator_id');
+            $table->bigInteger('importo');
             $table->string('tipo_di_presenza');
             $table->string('luogo');
             $table->string('descrizione');

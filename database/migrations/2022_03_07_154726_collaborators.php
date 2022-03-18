@@ -32,7 +32,7 @@ class Collaborators extends Migration
         });
     }
 
-    /**
+    /*
      * Reverse the migrations.
      *
      * @return void

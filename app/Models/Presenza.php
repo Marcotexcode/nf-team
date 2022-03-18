@@ -12,14 +12,19 @@ class Presenza extends Model
     protected $table = 'presences';
 
     protected $fillable = [
-        'data_inizio',
-        'data_fine',
+        'data',
         'collaborator_id',
+        'importo',
         'tipo_di_presenza',
         'luogo',
         'descrizione',
         'spese_rimborso',
         'bonus',
     ];
+
+    public function collaboratori()
+    {
+        return $this->belongsTo(Collaborator::class);
+    }
 
 }
