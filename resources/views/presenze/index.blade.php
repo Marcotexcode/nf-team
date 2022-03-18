@@ -66,8 +66,23 @@
                                                                 //dd($dateCalendarioId);
                                                             @endphp
 
-                                                            @if (array_key_exists($dateCalendario, $arrPresenze))
-                                                            {{'ciao'}}
+                                                            {{-- Preprendere il valore dell'array --}}
+                                                            {{-- @foreach ($arrPresenze as $arrPresenza)
+                                                                @foreach ($arrPresenza as $item)
+                                                                    {{$item}}
+                                                                @endforeach
+                                                            @endforeach --}}
+
+                                                            {{-- @if (array_key_exists($dateCalendario, $arrPresenze) )
+                                                                @foreach ($arrPresenze as $item)
+                                                                    @if (array_key_exists($collaboratore->id, $item))
+                                                                    {{}}
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif --}}
+
+                                                            @if (array_key_exists($dateCalendario, $arrPresenze) )
+                                                                {{'ciao'}}
                                                             @endif
 
                                                             <!-- Button trigger modal -->
