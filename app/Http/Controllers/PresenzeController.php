@@ -22,18 +22,18 @@ class PresenzeController extends Controller
 
 
         // 1 - PROVA
-        $a = Collaborator::pluck('id')->toArray(); //a
-        $b = Presenza::pluck('data')->toArray(); //b
+        // $a = Collaborator::pluck('id')->toArray(); //a
+        // $b = Presenza::pluck('data')->toArray(); //b
 
-        $presenza = [];
+        // $presenza = [];
 
-        for ($i=0; $i < count($a); $i++) {
-            $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
-            for ($j=0; $j < count($data); $j++) {
-                $array = array($data[$j] => $a[$i]);
-                array_push($presenza, $array);
-            }
-        }
+        // for ($i=0; $i < count($a); $i++) {
+        //     $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
+        //     for ($j=0; $j < count($data); $j++) {
+        //         $array = array($data[$j] => $a[$i]);
+        //         array_push($presenza, $array);
+        //     }
+        // }
 
         // dd($presenza);
 
@@ -46,7 +46,9 @@ class PresenzeController extends Controller
         for ($i=0; $i < count($a); $i++) {
             $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
             for ($j=0; $j < count($data); $j++) {
-                $presenza[$data[$j]][$a[$i]] = 'null';
+
+                $valorePresenza = Presenza::where('collaborator_id', $a[$i])->where('data',$data[$j])->get();
+                $presenza[$data[$j]][$a[$i]] = $valorePresenza;
             }
         }
 
