@@ -62,19 +62,16 @@
 
                                                                 $dateCalendario = $anno . '-' . $mese . '-' . $giorno;
 
+                                                                $dateCalendarioId[$anno . '-' . $mese . '-' . $giorno][$collaboratore->id] = 'hello';
+                                                                //dd($dateCalendarioId);
                                                             @endphp
-                                                            @foreach ($collaboratore->presenze as $presenza)
-                                                                @if ($presenza->data == $dateCalendario && $presenza->collaborator_id == $collaboratore->id)
-                                                                @else
 
-                                                                @endif
-                                                            @endforeach
-
-                                                            {{-- @if ($arrayPresenzeCollaboratori == $dateCalendario)
-                                                                {{'presenza'}}
-                                                            @endif --}}
+                                                            @if (array_key_exists($dateCalendario, $arrPresenze))
+                                                            {{'ciao'}}
+                                                            @endif
 
                                                             <!-- Button trigger modal -->
+                                                            {{-- {{array_key_exists($dateCalendario, $arrPresenze) ? "color" : ''}} --}}
                                                             <div data-bs-toggle="modal" class="add p-2 prendiDati" data-id="{{$collaboratore->id}}" data-data="{{$dateCalendario}}" data-bs-target="#exampleModal">&nbsp;</div>
                                                         </td>
                                                     @endfor

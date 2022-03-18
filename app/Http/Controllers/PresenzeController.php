@@ -17,10 +17,7 @@ class PresenzeController extends Controller
 
         $presenze = Presenza::all();
 
-
         $data = Carbon::createFromDate("$data");
-
-        dd($data);
 
         // Marco ti scrivo tutti i passi da fare, ti metto i commenti tu scrivi il codice
         //
@@ -36,37 +33,22 @@ class PresenzeController extends Controller
         // }
         //
         //  Finito, è tutto qui.  $arrPresenze va passato al blade ovviamente
-        //
 
-        $presenza = Presenza::whereBetween('data', ['2022-03-01', '2022-03-31'])->get();
+
+        $dataInizio = Carbon::createFromDate("$data")->startOfMonth();
+        $dataFine = Carbon::createFromDate("$data")->lastOfMonth();
+
+        $presenza = Presenza::whereBetween('data', [$dataInizio, $dataFine])->get();
+
+
+       // dd($presenza);
 
         $arrPresenze = [];
         foreach ($presenza as $item) {
             $arrPresenze[$item->data][$item->collaborator_id] = $item;
         }
 
-        dd($arrPresenze);
-
-        // 2 - PROVA
-        // $a = Collaborator::pluck('id')->toArray(); //a
-        // $b = Presenza::pluck('data')->toArray(); //b
-
-        // $presenza = [];
-
-        // for ($i=0; $i < count($a); $i++) {
-        //     $data = Presenza::where('collaborator_id', $a[$i] )->pluck('data')->toArray();
-        //     for ($j=0; $j < count($data); $j++) {
-
-        //         $valorePresenza = Presenza::where('collaborator_id', $a[$i])->where('data',$data[$j])->get();
-        //         $presenza[$data[$j]][$a[$i]] = $valorePresenza;
-        //     }
-        // }
-
-        //dd($presenza);
-
-
-        //$presenza[$id][$data] = $presenze;
-
+      // dd($arrPresenze);
 
         $dataNext = $data->copy()->addMonth();
         $dataSuccessiva =  $dataNext->year . '-' . $dataNext->month;
@@ -75,15 +57,13 @@ class PresenzeController extends Controller
         $dataSub = $data->copy()->subMonth();
         $dataPrecedente = $dataSub->year . '-' . $dataSub->month;
 
-        dd($dataPrecedente);
-
 
         $mesi[] = $data->englishMonth;
         $mesiNumero[] = $data->month;
         $giorni[] = $data->day;
         $anni[] = $data->year;
 
-        return view('presenze.index', compact('collaboratori', 'mesiNumero', 'arrayPresenzeCollaboratori', 'mesi', 'giorni', 'data', 'dataSuccessiva', 'dataPrecedente', 'anni', 'presenze', 'idCollaboratore'));
+        return view('presenze.index', compact('collaboratori', 'arrPresenze', 'mesiNumero', 'mesi', 'giorni', 'data', 'dataSuccessiva', 'dataPrecedente', 'anni', 'presenze'));
     }
 
     public function store(Request $request)
