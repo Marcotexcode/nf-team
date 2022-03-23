@@ -46,7 +46,7 @@
                                                     {{-- qui passo il nome e l'id selezionati --}}
                                                     <td>{{$collaboratore->nome}}</td>
                                                     @for ($i=1; $i <= $data->daysInMonth; $i++)
-                                                        <td scope="col" class="p-0 childDiv nomeCollaboratore" data-nome="{{$collaboratore->nome}}">
+                                                        <td scope="col" class="p-0 childDiv nomeCollaboratore">
                                                             @php
                                                                 if ($i < 10) {
                                                                     $giorno = '0'. $i;
@@ -64,9 +64,9 @@
                                                             @endphp
 
                                                             @if (array_key_exists($dataCella, $arrPresenze) && array_key_exists($collaboratore->id, $arrPresenze[$dataCella]))
-                                                                <div data-bs-toggle="modal" class="add p-2 color prendiDatiPresenza" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                                <div data-bs-toggle="modal" class="add apriModale p-2 color prendiDatiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
                                                             @else
-                                                                <div data-bs-toggle="modal" class="add p-2 prendiDatiPresenza" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                                <div data-bs-toggle="modal" class="add apriModale p-2 prendiDatiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
                                                             @endif
                                                         </td>
                                                     @endfor
@@ -92,7 +92,7 @@
                     <div class="modal-body">
 
                         <ul id="StampaErrori"></ul>
-                        <form id="crea_aggiorna_presenza" method="POST">
+                        <form id="creaAggiornaPresenza" method="POST">
 
                             {{-- Passo idSelezionata --}}
                             <div class="form-group my-3">
@@ -147,9 +147,8 @@
                                 <input type="number" class="form-control" id="bonus">
                             </div>
                             <button type="button" id="eliminaPresenza" class="btn bottone-elimina btn-danger ">Elimina</button>
-                            <button type="submit" class="btn btn-primary">Salva</button>
+                            <button type="submit" class="btn bottone-modifica btn-primary"></button>
                         </form>
-
 
                     </div>
                 </div>
@@ -163,12 +162,7 @@
                 }
             });
 
-            // Prendi il dato dalla classe .nomeCollaboratore e aggiungi all'id del form modale
-            $('.nomeCollaboratore').on('click', function () {
-                $('#nomeCollaboratore').text($(this).data('nome'));
-            });
-
-            $( "#crea_aggiorna_presenza" ).submit(function( event ) {
+            $( "#creaAggiornaPresenza" ).submit(function(event) {
 
                 event.preventDefault();
 
@@ -213,6 +207,7 @@
                 let dataSelezionata = $(this).data('data-cella');
                 let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
 
+                $('#nomeCollaboratore').text($(this).data('nome'));
                 $('#aggiungiData').attr('value', dataSelezionata);
                 $('#aggiungiDataSpan').text(dataSelezionata);
                 $('#aggiungiId').attr('value', idCollaboratoreSelezionato);
@@ -225,7 +220,6 @@
                         idColl: idCollaboratoreSelezionato
                     },
                     success: function (data) {
-                        console.log(data);
 
                         if (data) {
                             $('#tipo_di_presenza').val(data.tipo_di_presenza);
@@ -235,12 +229,23 @@
                             $('#spese_rimborso').attr('value', data.spese_rimborso);
                             $('#bonus').attr('value', data.bonus);
                         }
+
+                        if (!data.importo == '' ) {
+                            $('.bottone-elimina').html("Elimina");
+                            $('.bottone-modifica').html("Modifica");
+                            $('.bottone-elimina').removeClass("d-none").addClass("d-inline");
+                        }
+
+                        if (data.importo == '') {
+                            $('.bottone-elimina').html("Elimina");
+                            $('.bottone-modifica').html("Salva");
+                            $('.bottone-elimina').removeClass("d-inline").addClass("d-none");
+                        }
                     }
                 });
             });
 
             $('#eliminaPresenza').click( function () {
-                console.log('ciao');
                 $.ajax({
                     url: "/eliminaPresenza",
                     type: "DELETE",
@@ -288,7 +293,10 @@
 
 
 
-
+{{-- // Prendi il dato dalla classe .nomeCollaboratore e aggiungi all'id del form modale
+// $('.nomeCollaboratore').on('click', function () {
+//     $('#nomeCollaboratore').text($(this).data('nome'));
+// }); --}}
 
 
 
