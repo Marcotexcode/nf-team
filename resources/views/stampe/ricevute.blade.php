@@ -95,9 +95,9 @@
                               </tr>
                             </thead>
                             <tbody>
-                                @foreach ($collaboratore->presenze as $key => $presenza)
+                                @foreach ($collaboratore->presenze as $presenza)
                                 <tr>
-                                    <th scope="row">{{$presenza->data_inizio}}</th>
+                                    <th scope="row">{{$presenza->data}}</th>
                                     <td>{{$presenza->tipo_di_presenza}}
                                         <br>
                                         @if ($presenza->bonus > 0)
@@ -136,9 +136,10 @@
                                     <td colspan="2"></td>
                                     <td>Totale imponibile</td>
                                     <td>
-                                        @foreach ($somme as $somma)
+                                        €
+                                        {{-- @foreach ($somme as $somma)
                                             {{$somma}}
-                                        @endforeach
+                                        @endforeach --}}
                                     </td>
                                 </tr>
                             </tbody>

@@ -9,7 +9,7 @@ class Collaboratore extends Model
 {
     use HasFactory;
 
-    protected $table = 'collaborators';
+    protected $table = 'collaboratori';
 
     protected $fillable = [
         'nome',
@@ -27,7 +27,7 @@ class Collaboratore extends Model
 
     public function presenze()
     {
-        return $this->hasMany(Presenza::class);
+        return $this->hasMany(Presenza::class, 'collaborator_id', 'id');
     }
 
 }

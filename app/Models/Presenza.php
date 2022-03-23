@@ -22,9 +22,5 @@ class Presenza extends Model
         'bonus',
     ];
 
-    public function collaboratori()
-    {
-        return $this->belongsTo(Collaboratore::class);
-    }
 
 }

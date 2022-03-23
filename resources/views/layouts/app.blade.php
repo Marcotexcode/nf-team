@@ -23,13 +23,13 @@
 
 </head>
 <body>
-   @php
-    use Carbon\Carbon;
+    @php
+        use Carbon\Carbon;
 
-    $oggi = Carbon::now();
+        $oggi = Carbon::now();
 
-    $data = $oggi->year . '-' . $oggi->month;
-   @endphp
+        $data = $oggi->year . '-' . $oggi->month;
+    @endphp
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

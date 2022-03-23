@@ -106,7 +106,6 @@ class PresenzeController extends Controller
         $presenzeSelezionate = 0;
         $presenzePresenti = Presenza::where('data', $request->dataSel)->where('collaborator_id', $request->idColl)->get();
         if ($presenzePresenti->isEmpty()) {
-
             $presenzeNonPresenti = collect([
                 "id" => "",
                 "data" => "",
@@ -121,13 +120,9 @@ class PresenzeController extends Controller
                 "updated_at" => "",
             ]);
             $presenzeSelezionate =  $presenzeNonPresenti;
-
         } else {
-
             $presenzeSelezionate =  $presenzePresenti[0];
-
         }
-
         return response()->json($presenzeSelezionate);
     }
 }
