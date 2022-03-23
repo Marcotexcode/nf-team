@@ -46,7 +46,7 @@
                                                     {{-- qui passo il nome e l'id selezionati --}}
                                                     <td>{{$collaboratore->nome}}</td>
                                                     @for ($i=1; $i <= $data->daysInMonth; $i++)
-                                                        <td scope="col" class="p-0 childDiv nomeCollaboratore">
+                                                        <td scope="col" class="p-0">
                                                             @php
                                                                 if ($i < 10) {
                                                                     $giorno = '0'. $i;
@@ -109,22 +109,21 @@
                             <div class="form-group my-3">
                                 <input id="aggiungiData" type="hidden" class="form-control">
                             </div>
-
                             <div class="form-group my-3">
                                 <label for="tipo_di_presenza">Tipo di presenza</label>
                                 <select class="form-control" id="tipo_di_presenza">
                                     <option>Giornata a prezzo concordato</option>
-                                    <option data-tariffa="{{$collaboratore->intera_giornata}}" value="Intera giornata" {{--value="{{ $collaboratore->intera_giornata}}"--}}>Intera giornata</option>
-                                    <option data-tariffa="{{$collaboratore->mezza_giornata}}" value="Mezza giornata" {{--value="{{ $collaboratore->mezza_giornata}}"--}}>Mezza giornata</option>
-                                    <option data-tariffa="{{$collaboratore->giornata_estero}}" value="Giornata all' estero" {{--value="{{ $collaboratore->giornata_estero}}"--}}>Giornata all' estero</option>
-                                    <option data-tariffa="{{$collaboratore->giornata_formazione}}" value="Giornata di formazione propria" {{--value="{{ $collaboratore->giornata_formazione}}"--}}>Giornata di formazione propria</option>
+                                    <option class="intera" data-tariffa="" value="Intera giornata">Intera giornata</option>
+                                    <option class="mezza" data-tariffa="" value="Mezza giornata">Mezza giornata</option>
+                                    <option class="estera" data-tariffa="" value="Giornata all' estero">Giornata all' estero</option>
+                                    <option class="formazione" data-tariffa="" value="Giornata di formazione propria">Giornata di formazione propria</option>
                                     <option>Giornata a prezzo concordato</option>
                                 </select>
                             </div>
 
                             <div class="form-group my-3">
                                 <label for="importo">Importo</label>
-                                <input type="number" class="form-control" id="importo">
+                                <input type="number" disabled="disabled" class="form-control tip" placeholder="importo" id="importo">
                             </div>
 
                             <div class="form-group my-3">
@@ -149,13 +148,13 @@
                             <button type="button" id="eliminaPresenza" class="btn bottone-elimina btn-danger ">Elimina</button>
                             <button type="submit" class="btn bottone-modifica btn-primary"></button>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -173,7 +172,7 @@
                         idColl: $('#aggiungiId').val(),
                         dataInizio: $('#aggiungiData').val(),
                         tipoPresenza: $('#tipo_di_presenza').val(),
-                        importo: $('#importo').val(),
+                        importo: $('#tipo_di_presenza').find(":selected").data('tariffa'), // ******
                         luogo: $('#luogo').val(),
                         descrizione: $('#descrizione').val(),
                         speseRimborso: $('#spese_rimborso').val(),
@@ -207,6 +206,11 @@
                 let dataSelezionata = $(this).data('data-cella');
                 let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
 
+
+                $('.tip').attr("placeholder", '************ inserire la tariffa ************');
+
+
+
                 $('#nomeCollaboratore').text($(this).data('nome'));
                 $('#aggiungiData').attr('value', dataSelezionata);
                 $('#aggiungiDataSpan').text(dataSelezionata);
@@ -220,23 +224,25 @@
                         idColl: idCollaboratoreSelezionato
                     },
                     success: function (data) {
+                        $('.intera').attr('data-tariffa', data[1].intera_giornata); // ******************************************************
+                        $('.mezza').attr('data-tariffa', data[1].mezza_giornata); // ******************************************************
+                        $('.estera').attr('data-tariffa', data[1].giornata_estero); // ******************************************************
+                        $('.formazione').attr('data-tariffa', data[1].giornata_formazione); // ******************************************************
 
-                        if (data) {
-                            $('#tipo_di_presenza').val(data.tipo_di_presenza);
-                            $('#importo').attr('value', data.importo);
-                            $('#luogo').attr('value', data.luogo);
-                            $('#descrizione').val(data.descrizione);
-                            $('#spese_rimborso').attr('value', data.spese_rimborso);
-                            $('#bonus').attr('value', data.bonus);
-                        }
+                        $('#tipo_di_presenza').val(data[0].tipo_di_presenza);
+                        $('#importo').attr('value', data[0].importo);
+                        $('#luogo').attr('value', data[0].luogo);
+                        $('#descrizione').val(data[0].descrizione);
+                        $('#spese_rimborso').attr('value', data[0].spese_rimborso);
+                        $('#bonus').attr('value', data[0].bonus);
 
-                        if (!data.importo == '' ) {
+                        if (!data[0].importo == '' ) {
                             $('.bottone-elimina').html("Elimina");
                             $('.bottone-modifica').html("Modifica");
                             $('.bottone-elimina').removeClass("d-none").addClass("d-inline");
                         }
 
-                        if (data.importo == '') {
+                        if (data[0].importo == '') {
                             $('.bottone-elimina').html("Elimina");
                             $('.bottone-modifica').html("Salva");
                             $('.bottone-elimina').removeClass("d-inline").addClass("d-none");

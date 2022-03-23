@@ -103,6 +103,11 @@ class PresenzeController extends Controller
 
     public function prendiDatiPresenza(Request $request)
     {
+
+        $collaboratore = Collaboratore::where('id', $request->idColl)->select('intera_giornata', 'mezza_giornata', 'giornata_estero' , 'giornata_formazione')->get();
+
+        $collaboratoreSelezionato = $collaboratore[0];
+
         $presenzeSelezionate = 0;
         $presenzePresenti = Presenza::where('data', $request->dataSel)->where('collaborator_id', $request->idColl)->get();
         if ($presenzePresenti->isEmpty()) {
@@ -123,6 +128,7 @@ class PresenzeController extends Controller
         } else {
             $presenzeSelezionate =  $presenzePresenti[0];
         }
-        return response()->json($presenzeSelezionate);
+
+        return response()->json([$presenzeSelezionate, $collaboratoreSelezionato]);
     }
 }

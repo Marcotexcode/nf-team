@@ -22011,13 +22011,9 @@ readers do not read off random characters that represent icons */
 .add:hover {
   width: 100%;
   height: 100%;
-  background-color: rgba(138, 138, 138, 0.404);
+  background-color: rgba(148, 147, 147, 0.329);
 }
 
 .color {
   background-color: #646464;
-}
-
-.selezionato {
-  background-color: blue;
 }
