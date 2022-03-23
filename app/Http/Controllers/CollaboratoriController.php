@@ -14,7 +14,6 @@ class CollaboratoriController extends Controller
     {
         $collaboratori = Collaboratore::all();
 
-
         return view('collaboratori.index', compact('collaboratori'));
     }
 
@@ -49,6 +48,11 @@ class CollaboratoriController extends Controller
         $collaboratore->delete();
 
         return redirect()->route('collaboratori.index');
+    }
+
+    public function create()
+    {
+        return view('collaboratori.store');
     }
 
 

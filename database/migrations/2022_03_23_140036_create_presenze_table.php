@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePresencesTable extends Migration
+class CreatePresenzeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,18 @@ class CreatePresencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('presences', function (Blueprint $table) {
+        Schema::create('presenze', function (Blueprint $table) {
             $table->id();
 
-            $table->date('data_inizio');
-            $table->date('data_fine');
+            $table->date('data');
             $table->unsignedBigInteger('collaborator_id');
             $table->bigInteger('importo');
             $table->string('tipo_di_presenza');
             $table->string('luogo');
-            $table->string('descrizione');
-            $table->bigInteger('spese_rimborso');
-            $table->bigInteger('bonus');
-            $table->foreign('collaborator_id')->references('id')->on('collaborators')->onDelete('cascade');
+            $table->string('descrizione')->nullable();
+            $table->bigInteger('spese_rimborso')->nullable();
+            $table->bigInteger('bonus')->nullable();
+            $table->foreign('collaborator_id')->references('id')->on('collaboratori')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -38,6 +37,6 @@ class CreatePresencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presences');
+        Schema::dropIfExists('presenze');
     }
 }

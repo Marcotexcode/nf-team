@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PresenzeController extends Controller
 {
-    public function index($data)
+    public function indicePresenze($data)
     {
         $collaboratori = Collaboratore::all();
 

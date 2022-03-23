@@ -9,7 +9,7 @@ class Presenza extends Model
 {
     use HasFactory;
 
-    protected $table = 'presences';
+    protected $table = 'presenze';
 
     protected $fillable = [
         'data',

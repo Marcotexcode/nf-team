@@ -39,15 +39,14 @@ Route::post('utenti_store', [UtentiController::class, 'store'])->name('utenti.st
 // Collaboratori
 Route::get('collaboratori', [CollaboratoriController::class, 'index'])->name('collaboratori.index');
 Route::get('collaboratori/{collaboratore}', [CollaboratoriController::class, 'edit'])->name('collaboratori.edit');
-Route::get('collaboratoriCreate*****', [CollaboratoriController::class, 'create'])->name('collaboratori.create');
+Route::get('collaboratoriCreate', [CollaboratoriController::class, 'create'])->name('collaboratori.create');
 Route::put('collaboratori/{collaboratore}', [CollaboratoriController::class, 'update'])->name('collaboratori.update');
 Route::delete('collaboratori/{collaboratore}', [CollaboratoriController::class, 'destroy'])->name('collaboratori.destroy');
 Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->name('collaboratori.store');
 
 
 // Presenze
-Route::get('presenze/{data}', [PresenzeController::class, 'index'])->name('presenze.index');
-Route::get('presenzeCreate*****', [PresenzeController::class, 'create'])->name('presenze.create');
+Route::get('presenze/{data}', [PresenzeController::class, 'indicePresenze'])->name('presenze.index');
 Route::get('prendiDatiPresenza', [PresenzeController::class, 'prendiDatiPresenza']);
 Route::delete('eliminaPresenza', [PresenzeController::class, 'destroy']);
 Route::post('aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');

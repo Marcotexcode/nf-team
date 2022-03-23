@@ -241,6 +241,7 @@
                             $('.bottone-modifica').html("Salva");
                             $('.bottone-elimina').removeClass("d-inline").addClass("d-none");
                         }
+
                     }
                 });
             });
@@ -259,7 +260,6 @@
                     }
                 });
             });
-
         </script>
     </div>
 @endsection
