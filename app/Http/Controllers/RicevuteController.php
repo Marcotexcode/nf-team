@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Presenza;
-use App\Models\Collaborator;
+use App\Models\Collaboratore;
 
 
 class RicevuteController extends Controller
 {
     public function index()
     {
-        $collaboratori = Collaborator::all();
+        $collaboratori = Collaboratore::all();
 
-        $coll = Collaborator::get();
+        $coll = Collaboratore::get();
 
         // Per ogni collaboratore devo fare la somma totale dell' importo, rimborso e bonus
         $somme = [];
@@ -26,11 +26,8 @@ class RicevuteController extends Controller
             $tot = array_sum($sommaImporto) + array_sum($sommaRimborso) + array_sum($sommaBonus);
             array_push($somme, $tot);
         }
-        //dd($somme);
 
-        $pro = Collaborator::has('presenze')->get();
-
-       // dd($pro);
+        //$pro = Collaboratore::has('presenze')->get();
 
         return view('stampe.ricevute', compact('collaboratori', 'somme'));
     }

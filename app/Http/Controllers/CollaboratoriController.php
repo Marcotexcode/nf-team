@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Collaborator;
+use App\Models\Collaboratore;
 use App\Models\Presenza;
 
 
@@ -12,20 +12,18 @@ class CollaboratoriController extends Controller
 {
     public function index()
     {
-        $collaboratori = Collaborator::all();
-
-        dd($prendiDatiCollaboratore);
+        $collaboratori = Collaboratore::all();
 
 
         return view('collaboratori.index', compact('collaboratori'));
     }
 
-    public function edit(Collaborator $collaboratore)
+    public function edit(Collaboratore $collaboratore)
     {
         return view('collaboratori.edit', compact('collaboratore'));
     }
 
-    public function update(Request $request, Collaborator $collaboratore)
+    public function update(Request $request, Collaboratore $collaboratore)
     {
         $request->validate ([
             'nome' => 'required',
@@ -46,7 +44,7 @@ class CollaboratoriController extends Controller
         return redirect()->route('collaboratori.index');
     }
 
-    public function destroy( Collaborator $collaboratore)
+    public function destroy( Collaboratore $collaboratore)
     {
         $collaboratore->delete();
 
@@ -70,7 +68,7 @@ class CollaboratoriController extends Controller
             'giornata_formazione' => 'required'
         ]);
 
-        Collaborator::create($request->all());
+        Collaboratore::create($request->all());
 
         return redirect()->route('collaboratori.index');
     }

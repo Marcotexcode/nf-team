@@ -24,7 +24,7 @@ class Presenza extends Model
 
     public function collaboratori()
     {
-        return $this->belongsTo(Collaborator::class);
+        return $this->belongsTo(Collaboratore::class);
     }
 
 }

@@ -48,17 +48,11 @@ Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->n
 // Presenze
 Route::get('presenze/{data}', [PresenzeController::class, 'index'])->name('presenze.index');
 Route::get('presenzeCreate*****', [PresenzeController::class, 'create'])->name('presenze.create');
-Route::delete('presenze/{presenza}', [PresenzeController::class, 'destroy'])->name('presenze.destroy');
-Route::post('presenze_store', [PresenzeController::class, 'store'])->name('presenze.store');
-
+Route::get('prendiDatiPresenza', [PresenzeController::class, 'prendiDatiPresenza']);
+Route::delete('eliminaPresenza', [PresenzeController::class, 'destroy']);
+Route::post('aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');
 
 
 // Ricevute
 Route::get('ricevute', [RicevuteController::class, 'index'])->name('ricevute.index');
-
-
-// Prendi i dati con ajax
-Route::get('prendiDati', [PresenzeController::class, 'prendiDati']);
-
-
 
