@@ -22014,6 +22014,22 @@ readers do not read off random characters that represent icons */
   background-color: rgba(148, 147, 147, 0.329);
 }
 
-.color {
-  background-color: #646464;
+.verde {
+  background-color: #35964b;
+}
+
+.azzurro {
+  background-color: #68aeca;
+}
+
+.giallo {
+  background-color: #c7c422;
+}
+
+.marrone {
+  background-color: #757442;
+}
+
+.viola {
+  background-color: #7e467e;
 }

@@ -73,10 +73,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('ricevute.index') }}">
+                                    <a class="dropdown-item" href="{{ route('ricevute.index', $data) }}">
                                     Ricevute
                                     </a>
-
+                                    <a class="dropdown-item" href="{{ route('indiceReport') }}">
+                                        Report
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('indiceReportDettagliato') }}">
+                                        Report Dettagliato
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

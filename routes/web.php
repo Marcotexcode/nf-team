@@ -7,6 +7,10 @@ use App\Http\Controllers\UtentiController;
 use App\Http\Controllers\CollaboratoriController;
 use App\Http\Controllers\PresenzeController;
 use App\Http\Controllers\RicevuteController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportDettagliatoController;
+
+
 
 
 
@@ -47,11 +51,17 @@ Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->n
 
 // Presenze
 Route::get('presenze/{data}', [PresenzeController::class, 'indicePresenze'])->name('presenze.index');
-Route::get('prendiDatiPresenza', [PresenzeController::class, 'prendiDatiPresenza']);
+Route::get('datiPresenza', [PresenzeController::class, 'datiPresenza']);
+Route::get('datiCollaboratore', [PresenzeController::class, 'datiCollaboratore']);
+
 Route::delete('eliminaPresenza', [PresenzeController::class, 'destroy']);
-Route::post('aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');
+Route::post('crea_aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');
 
 
 // Ricevute
-Route::get('ricevute', [RicevuteController::class, 'index'])->name('ricevute.index');
+Route::get('ricevute/{data}', [RicevuteController::class, 'index'])->name('ricevute.index');
+Route::get('report', [ReportController::class, 'indiceReport'])->name('indiceReport');
+Route::get('report_dettagliato', [ReportDettagliatoController::class, 'indiceReportDettagliato'])->name('indiceReportDettagliato');
+
+
 

@@ -1,0 +1,33 @@
+.circle {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.add:hover {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(148, 147, 147, 0.329);
+}
+
+.verde {
+  background-color: #35964b;
+}
+
+.azzurro {
+  background-color: #68aeca;
+}
+
+.giallo {
+  background-color: #c7c422;
+}
+
+.marrone {
+  background-color: #757442;
+}
+
+.viola {
+  background-color: #7e467e;
+}
+/*# sourceMappingURL=style.css.map */

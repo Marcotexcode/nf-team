@@ -37,11 +37,10 @@
                     </div>
                 </div>
             </form>
-
-        </div>
+            </div>
         <div class="row">
             @foreach ($collaboratori as $collaboratore)
-                <div class="col-12 border mt-5">
+                <div class="col-12 border border-dark p-5 mt-5">
                     <div class="offset-7 col-5 text-danger fw-bold">
                         <span>periodo report da data 01-03-2022 a data 31-03-2022</span>
                     </div>
@@ -58,9 +57,9 @@
                     </div>
                     <div class="row">
                         <div class="offset-9 col-3">
-                            Luogo____
+                            Luogo____________
                             <br>
-                            Data_____
+                            Data_____________
                             <br>
                             <br>
                             Spett.le
@@ -74,7 +73,6 @@
                             P.iva 01278030687
                             <br>
                             codice Sdi: SUBM70N
-
                         </div>
                     </div>
                     <div class="row">
@@ -98,7 +96,7 @@
                                 @foreach ($collaboratore->presenze as $presenza)
                                 <tr>
                                     <th scope="row">{{$presenza->data}}</th>
-                                    <td>{{$presenza->tipo_di_presenza}}
+                                    <td>{{$presenza->tipo_di_presenza}}({{$presenza->luogo}})
                                         <br>
                                         @if ($presenza->bonus > 0)
                                             Bonus gradimento clienti
@@ -136,10 +134,7 @@
                                     <td colspan="2"></td>
                                     <td>Totale imponibile</td>
                                     <td>
-                                        €
-                                        {{-- @foreach ($somme as $somma)
-                                            {{$somma}}
-                                        @endforeach --}}
+                                        € {{$somme[$collaboratore->id]}}
                                     </td>
                                 </tr>
                             </tbody>

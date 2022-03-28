@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div id="container" class="container">
         <div class="row">
             <div class="col">
                 @foreach ($mesi as $mese)
@@ -14,19 +14,18 @@
                             </div>
                             <div class="my-3">
                                 <span>Legenda colori:</span>
-                                <div class="circle bg-primary"></div>
+                                <div class="circle mx-1 verde"></div>
                                 <span>Intera</span>
-                                <div class="circle bg-secondary"></div>
+                                <div class="circle mx-1 azzurro"></div>
                                 <span>Mezza</span>
-                                <div class="circle bg-success"></div>
+                                <div class="circle mx-1 giallo"></div>
                                 <span>Estera</span>
-                                <div class="circle bg-danger"></div>
+                                <div class="circle mx-1 marrone"></div>
                                 <span>Formazione</span>
-                                <div class="circle bg-warning"></div>
+                                <div class="circle mx-1 viola"></div>
                                 <span>Concordato</span>
-                                <div class="circle bg-info"></div>
-                                <span>S ha il rimborso spese</span>
-                                <span>B ha il bonus</span>
+                                <span class="mx-5"><span class="h5">S</span> ha il rimborso spese</span>
+                                <span class="mx-3"><span class="h5">B</span> ha il bonus</span>
                             </div>
                             <span id="messaggioSuccesso"></span>
                             <div class="row"><i class="fa-solid fa-right"></i>
@@ -61,12 +60,33 @@
                                                                 }
 
                                                                 $dataCella = $anno . '-' . $mese . '-' . $giorno;
-                                                            @endphp
 
+                                                                $rimborso = null;
+                                                                $bonus = null;
+
+                                                            @endphp
                                                             @if (array_key_exists($dataCella, $arrPresenze) && array_key_exists($collaboratore->id, $arrPresenze[$dataCella]))
-                                                                <div data-bs-toggle="modal" class="add apriModale p-2 color prendiDatiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                                @php
+                                                                    if($arrPresenze[$dataCella][$collaboratore->id]->spese_rimborso) {
+                                                                        $rimborso = 'S';
+                                                                    }
+                                                                    if($arrPresenze[$dataCella][$collaboratore->id]->bonus) {
+                                                                        $bonus = 'B';
+                                                                    }
+                                                                @endphp
+                                                                @if ($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Intera giornata")
+                                                                    <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 verde datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                                @elseif($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Mezza giornata")
+                                                                    <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 azzurro datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                                @elseif($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Giornata all' estero")
+                                                                    <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 giallo datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                                @elseif($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Giornata di formazione propria")
+                                                                    <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 marrone datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                                @else
+                                                                    <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 viola datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                                @endif
                                                             @else
-                                                                <div data-bs-toggle="modal" class="add apriModale p-2 prendiDatiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                                <div data-bs-toggle="modal" id="{{$collaboratore->id}} - {{$dataCella}}" class="add prova apriModale p-2 datiCollaboratore datiPresenza" data-nome="{{$collaboratore->nome}}" data-id-collaboratore-cella="{{$collaboratore->id}}" data-data-cella="{{$dataCella}}" data-bs-target="#modalePresenze">&nbsp;</div>
                                                             @endif
                                                         </td>
                                                     @endfor
@@ -90,13 +110,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
                         <ul id="StampaErrori"></ul>
                         <form id="creaAggiornaPresenza" method="POST">
-
                             {{-- Passo idSelezionata --}}
                             <div class="form-group my-3">
-                                <input id="aggiungiId" type="hidden" class="form-control">
+                                <input id="idCollaboratore" type="hidden" class="form-control">
                             </div>
 
                             {{-- Data iziale aggiunta con jquery --}}
@@ -105,25 +123,30 @@
                                 <span id="aggiungiDataSpan"></span>
                             </div>
 
+                            {{-- Data finale  --}}
+                            <div class="form-group my-3">
+                                <label for="fino_a">Fino a:</label>
+                                <input class="mb-2" type="date" name="fino_a" id="fino_a">
+                            </div>
+
                             {{-- Passo dataSelezionata --}}
                             <div class="form-group my-3">
                                 <input id="aggiungiData" type="hidden" class="form-control">
                             </div>
                             <div class="form-group my-3">
                                 <label for="tipo_di_presenza">Tipo di presenza</label>
-                                <select class="form-control" id="tipo_di_presenza">
-                                    <option>Giornata a prezzo concordato</option>
+                                <select class="form-control cambiaImporto" id="tipo_di_presenza">
                                     <option class="intera" data-tariffa="" value="Intera giornata">Intera giornata</option>
                                     <option class="mezza" data-tariffa="" value="Mezza giornata">Mezza giornata</option>
                                     <option class="estera" data-tariffa="" value="Giornata all' estero">Giornata all' estero</option>
                                     <option class="formazione" data-tariffa="" value="Giornata di formazione propria">Giornata di formazione propria</option>
-                                    <option>Giornata a prezzo concordato</option>
+                                    <option class="concordato">Giornata a prezzo concordato</option>
                                 </select>
                             </div>
 
                             <div class="form-group my-3">
                                 <label for="importo">Importo</label>
-                                <input type="number" disabled="disabled" class="form-control tip" placeholder="importo" id="importo">
+                                <input type="number" disabled="disabled" class="form-control importo" id="importo">
                             </div>
 
                             <div class="form-group my-3">
@@ -154,35 +177,100 @@
         </div>
 
         <script>
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            $( "#creaAggiornaPresenza" ).submit(function(event) {
+            $(".datiPresenza").click(function(){
+                let dataSelezionata = $(this).data('data-cella');
+                let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
 
-                event.preventDefault();
+                $('#aggiungiData').attr('value', dataSelezionata);
+                $('#fino_a').attr('value', dataSelezionata);
+                $('#aggiungiDataSpan').text(dataSelezionata);
 
                 $.ajax({
-                    url: "/aggiorna_presenza",
+                    url: "/datiPresenza",
+                    method: 'GET',
+                    data: {
+                        dataSel: dataSelezionata,
+                        idColl: idCollaboratoreSelezionato
+                    },
+                    success: function (data) {
+                        $('#tipo_di_presenza').val(data.tipo_di_presenza);
+                        $('#importo').attr('value', data.importo);
+                        $('#luogo').attr('value', data.luogo);
+                        $('#descrizione').val(data.descrizione);
+                        $('#spese_rimborso').attr('value', data.spese_rimborso);
+                        $('#bonus').attr('value', data.bonus);
+
+                        if (!data.importo == '' ) {
+                            $('.bottone-elimina').html("Elimina");
+                            $('.bottone-modifica').html("Modifica");
+                            $('.bottone-elimina').removeClass("d-none").addClass("d-inline");
+                        }
+
+                        if (data.importo == '') {
+                            $('.bottone-elimina').html("Elimina");
+                            $('.bottone-modifica').html("Salva");
+                            $('.bottone-elimina').removeClass("d-inline").addClass("d-none");
+                        }
+                    }
+                });
+            });
+
+            $('.datiCollaboratore').click(function() {
+                let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
+
+                $('#nomeCollaboratore').text($(this).data('nome'));
+                $('#idCollaboratore').attr('value', idCollaboratoreSelezionato);
+
+
+                $.ajax({
+                    url: "/datiCollaboratore",
+                    method: 'GET',
+                    data: {
+                        idColl: idCollaboratoreSelezionato
+                    },
+                    success: function (data) {
+                        $('.intera').attr('data-tariffa', data.intera_giornata);
+                        $('.mezza').attr('data-tariffa', data.mezza_giornata);
+                        $('.estera').attr('data-tariffa', data.giornata_estero);
+                        $('.formazione').attr('data-tariffa', data.giornata_formazione);
+                       // $('.concordato').attr('data-tariffa', 'Importo');
+                    }
+                });
+            });
+
+            $( "#creaAggiornaPresenza" ).submit(function(event) {
+                event.preventDefault();
+
+                let imp = 0;
+                if ($('#tipo_di_presenza').find(":selected").data('tariffa')) {
+                    imp = $('#tipo_di_presenza').find(":selected").data('tariffa')
+                } else {
+                    imp = $('#importo').val()
+                }
+
+                $.ajax({
+                    url: "/crea_aggiorna_presenza",
                     type: "POST",
                     data:{
-                        idColl: $('#aggiungiId').val(),
-                        dataInizio: $('#aggiungiData').val(),
+                        idColl: $('#idCollaboratore').val(),
+                        data: $('#aggiungiData').val(),
                         tipoPresenza: $('#tipo_di_presenza').val(),
-                        importo: $('#tipo_di_presenza').find(":selected").data('tariffa'), // ******
+                        importo: imp,
                         luogo: $('#luogo').val(),
                         descrizione: $('#descrizione').val(),
                         speseRimborso: $('#spese_rimborso').val(),
                         bonus: $('#bonus').val(),
+                        finoA: $('#fino_a').val(),
                     },
 
                     success:function(response){
-                        console.log(response);
                         if (response.status == 400) {
-
                             $('#StampaErrori').html("");
                             $('#StampaErrori').addClass("alert alert-danger");
                             $.each(response.errors, function($key, err_value){
@@ -195,70 +283,66 @@
                             $('#messaggioSuccesso').addClass("alert alert-success");
                             $('#messaggioSuccesso').text(response.message);
                             $('#modalePresenze').modal('hide');
-                            location.reload();
+
+                            //let idCella = response[0].collaborator_id + ' - ' + response[0].data;
+
+                            //console.log(idCella);
+
+                            let idCella = response.collaborator_id + ' - ' + response.data;
+
+                            $(".datiPresenza").each(function(){
+                              //  console.log('dato' +  idCella);
+                              //  console.log(($(this).attr("id")));
+
+                                if (($(this).attr("id")) == idCella) {
+                                    if ($('#spese_rimborso').val()) {
+                                    $(this).text('S');
+                                    }
+                                    if ($('#bonus').val()) {
+                                        $(this).text('B');
+                                    }
+                                    if ($('#spese_rimborso').val() && $('#bonus').val()) {
+                                        $(this).text('SB');
+                                    }
+
+                                    if ($('#tipo_di_presenza').val() == 'Intera giornata') {
+                                        $(this).css('background-color', '#35964b');
+                                    }
+                                    if($('#tipo_di_presenza').val() == "Mezza giornata") {
+                                        $(this).css('background-color', '#68aeca');
+                                    }
+                                    if($('#tipo_di_presenza').val() == "Giornata all' estero") {
+                                        $(this).css('background-color', '#c7c422');
+                                    }
+                                    if($('#tipo_di_presenza').val() == "Giornata di formazione propria") {
+                                        $(this).css('background-color', '#757442');
+                                    }
+                                    if($('#tipo_di_presenza').val() == "Giornata a prezzo concordato")  {
+                                        $(this).css('background-color', '#7e467e');
+                                    }
+                                }
+                            });
                         }
                     },
                 });
             });
 
-            $(".prendiDatiPresenza").click(function(){
-
-                let dataSelezionata = $(this).data('data-cella');
-                let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
-
-
-                $('.tip').attr("placeholder", '************ inserire la tariffa ************');
-
-
-
-                $('#nomeCollaboratore').text($(this).data('nome'));
-                $('#aggiungiData').attr('value', dataSelezionata);
-                $('#aggiungiDataSpan').text(dataSelezionata);
-                $('#aggiungiId').attr('value', idCollaboratoreSelezionato);
-
-                $.ajax({
-                    url: "/prendiDatiPresenza",
-                    method: 'GET',
-                    data: {
-                        dataSel: dataSelezionata,
-                        idColl: idCollaboratoreSelezionato
-                    },
-                    success: function (data) {
-                        $('.intera').attr('data-tariffa', data[1].intera_giornata); // ******************************************************
-                        $('.mezza').attr('data-tariffa', data[1].mezza_giornata); // ******************************************************
-                        $('.estera').attr('data-tariffa', data[1].giornata_estero); // ******************************************************
-                        $('.formazione').attr('data-tariffa', data[1].giornata_formazione); // ******************************************************
-
-                        $('#tipo_di_presenza').val(data[0].tipo_di_presenza);
-                        $('#importo').attr('value', data[0].importo);
-                        $('#luogo').attr('value', data[0].luogo);
-                        $('#descrizione').val(data[0].descrizione);
-                        $('#spese_rimborso').attr('value', data[0].spese_rimborso);
-                        $('#bonus').attr('value', data[0].bonus);
-
-                        if (!data[0].importo == '' ) {
-                            $('.bottone-elimina').html("Elimina");
-                            $('.bottone-modifica').html("Modifica");
-                            $('.bottone-elimina').removeClass("d-none").addClass("d-inline");
-                        }
-
-                        if (data[0].importo == '') {
-                            $('.bottone-elimina').html("Elimina");
-                            $('.bottone-modifica').html("Salva");
-                            $('.bottone-elimina').removeClass("d-inline").addClass("d-none");
-                        }
-
-                    }
-                });
+            $(".cambiaImporto").change(function(){
+                if ($('#tipo_di_presenza').find(":selected").val() == 'Giornata a prezzo concordato') {
+                    $('.importo').prop('disabled', false).attr("placeholder", $('#tipo_di_presenza').find(":selected").data('tariffa'));
+                } else{
+                    $('.importo').prop('disabled', 'disabled').attr("placeholder", $('#tipo_di_presenza').find(":selected").data('tariffa'));
+                }
+               // $('.tip').attr("placeholder", $('#tipo_di_presenza').find(":selected").data('tariffa'));
             });
 
-            $('#eliminaPresenza').click( function () {
+            $('#eliminaPresenza').click( function() {
                 $.ajax({
                     url: "/eliminaPresenza",
                     type: "DELETE",
                     data:{
-                        idColl: $('#aggiungiId').val(),
-                        dataInizio: $('#aggiungiData').val(),
+                        prendiIdColl: $('#idCollaboratore').val(),
+                        prendiData: $('#aggiungiData').val(),
                     },
                     success: function (data) {
                         $('#modalePresenze').modal('hide');
@@ -277,10 +361,15 @@
 
 
 
-
-
-
-
+{{--
+// Quando trovo la carella con la data corrispondente, passo il dato
+                            $('#creaAggiornaPresenza').each(function(i) {
+                                console.log(i + ' ' + $('#aggiungiData').val());
+                            });
+                            console.log($('#tipo_di_presenza').val());
+                            if ($('#aggiungiData').val() == response.data) {
+                                $('#dati').css('background-color', 'red');
+                            } --}}
 
 
 
@@ -340,8 +429,8 @@
         //         url: "/eliminaPresenza",
         //         type: "POST",
         //         data:{
-        //             idColl: $('#aggiungiId').val(),
-        //             dataInizio: $('#aggiungiData').val(),
+        //             idColl: $('#idCollaboratore').val(),
+        //             data: $('#aggiungiData').val(),
         //         },
         //         success:function(response){
         //             console.log(response);
@@ -355,6 +444,8 @@
 
         //         }
         // }); --}}
+
+
 
 
         {{-- // //Svuota il form una volta chiuso il modale
