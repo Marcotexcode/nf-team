@@ -39,7 +39,7 @@
                             <td>€ {{$sommaGiornataFormazione[$collaboratore->id]}} ({{$giornataFormazione[$collaboratore->id]}})</td>
                             <td>€ {{$giornataRimborso[$collaboratore->id]}}</td>
                             <td>€ {{$giornataBonus[$collaboratore->id]}}</td>
-                            {{-- <td>€ {{$tot[$collaboratore->id]}}</td> --}}
+                            <td>€ {{$tot[$collaboratore->id]}}</td>
                         </tr>
                     @endforeach
 

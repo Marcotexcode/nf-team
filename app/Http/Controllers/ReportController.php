@@ -16,39 +16,41 @@ class ReportController extends Controller
         // Prendo solo i collaboratori che hanno le presenze
         $collaboratori = Collaboratore::has('presenze')->get();
 
+
         // Ciclo ogni collaboratore che ha presenze
         foreach ($collaboratori as $collaboratore) {
+            /**
+             * Gli passo una chiave cosi poi può essere riperso facilmente nel blade
+             * Prendo il numero totale di intere giornate che ha il collaboratore ciclato
+             * Prendo il costo di intere giornate che ha il collaboratore ciclato
+             * Calcolo il numero totale di intere giornate per il costo di intere giornate che ha il collaboratore ciclato
+             */
 
-            $pres = Presenza::where('collaborator_id', $collaboratore->id)->get();
-            // Gli passo una chiave cosi poi può essere riperso facilmente nel blade
-            // Prendo il numero totale di intere giornate che ha il collaboratore ciclato
-            $intereGiornate[$collaboratore->id] = $pres->where('tipo_di_presenza', 'Intera giornata')->count();
-            // Prendo il costo di intere giornate che ha il collaboratore ciclato
+            $presenzeCollaboratori = Presenza::where('collaborator_id', $collaboratore->id)->get();
+            $intereGiornate[$collaboratore->id] = $presenzeCollaboratori->where('tipo_di_presenza', 'Intera giornata')->count();
             $totSoldiInteraGiornata = Collaboratore::value('intera_giornata');
-            // Calcolo il numero totale di intere giornate per il costo di intere giornate che ha il collaboratore ciclato
             $sommainteraGiornata[$collaboratore->id] = $totSoldiInteraGiornata * $intereGiornate[$collaboratore->id];
 
-
-            $mezzaGiornata[$collaboratore->id] = $pres->where('tipo_di_presenza', 'Mezza giornata')->count();
+            $mezzaGiornata[$collaboratore->id] = $presenzeCollaboratori->where('tipo_di_presenza', 'Mezza giornata')->count();
             $totSoldiMezzaGiornata = Collaboratore::value('mezza_giornata');
             $sommaMezzaGiornata[$collaboratore->id] = $totSoldiMezzaGiornata * $mezzaGiornata[$collaboratore->id];
 
-            $giornataEstero[$collaboratore->id] = Presenza::where('collaborator_id', $collaboratore->id)->where('tipo_di_presenza', 'Giornata all\' estero')->count();
+            $giornataEstero[$collaboratore->id] = $presenzeCollaboratori->where('tipo_di_presenza', 'Giornata all\' estero')->count();
             $totSoldiGiornataEstero = Collaboratore::value('giornata_estero');
             $sommaGiornataEstero[$collaboratore->id] = $totSoldiGiornataEstero * $giornataEstero[$collaboratore->id];
 
-            $giornataFormazione[$collaboratore->id] = Presenza::where('collaborator_id', $collaboratore->id)->where('tipo_di_presenza', 'Giornata di formazione propria')->count();
+            $giornataFormazione[$collaboratore->id] = $presenzeCollaboratori->where('tipo_di_presenza', 'Giornata di formazione propria')->count();
             $totSoldiGiornataFormazione = Collaboratore::value('giornata_formazione');
             $sommaGiornataFormazione[$collaboratore->id] = $totSoldiGiornataFormazione * $giornataFormazione[$collaboratore->id];
 
-            $giornataRimborso[$collaboratore->id] = Presenza::where('collaborator_id', $collaboratore->id)->pluck('spese_rimborso')->sum();
+            $giornataRimborso[$collaboratore->id] = $presenzeCollaboratori->pluck('spese_rimborso')->sum();
 
-            $giornataBonus[$collaboratore->id] = Presenza::where('collaborator_id', $collaboratore->id)->pluck('bonus')->sum();
+            $giornataBonus[$collaboratore->id] = $presenzeCollaboratori->pluck('bonus')->sum();
 
             $tot[$collaboratore->id] =  $sommainteraGiornata[$collaboratore->id] + $sommaMezzaGiornata[$collaboratore->id] + $sommaGiornataEstero[$collaboratore->id] + $sommaGiornataFormazione[$collaboratore->id] + $giornataRimborso[$collaboratore->id] + $giornataBonus[$collaboratore->id];
         }
 
-        return view('stampe.report', compact('collaboratori', 'tot', 'filtriDate',  'intereGiornate', 'sommaGiornataFormazione', 'sommaMezzaGiornata', 'sommainteraGiornata', 'sommaGiornataEstero', 'mezzaGiornata', 'giornataEstero', 'giornataFormazione', 'giornataRimborso', 'giornataBonus'));
+        return view('stampe.report', compact('collaboratori',  'filtriDate',  'intereGiornate', 'sommainteraGiornata', 'mezzaGiornata', 'sommaMezzaGiornata', 'giornataEstero', 'sommaGiornataEstero', 'giornataFormazione', 'sommaGiornataFormazione', 'giornataRimborso', 'giornataBonus', 'tot'));
     }
 
     public function filtroDate(Request $request)
