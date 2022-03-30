@@ -115,9 +115,7 @@ class PresenzeController extends Controller
             array_push($arrPresenzeCreate, $presenza);
         }
 
-        //dd($arrPresenzeCreate);
-
-        return response()->json($presenza);
+        return response()->json($arrPresenzeCreate);
     }
 
     public function destroy(Request $request)

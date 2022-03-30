@@ -53,15 +53,19 @@ Route::post('collaboratori_store', [CollaboratoriController::class, 'store'])->n
 Route::get('presenze/{data}', [PresenzeController::class, 'indicePresenze'])->name('presenze.index');
 Route::get('datiPresenza', [PresenzeController::class, 'datiPresenza']);
 Route::get('datiCollaboratore', [PresenzeController::class, 'datiCollaboratore']);
-
 Route::delete('eliminaPresenza', [PresenzeController::class, 'destroy']);
 Route::post('crea_aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');
 
 
 // Ricevute
 Route::get('ricevute/{data}', [RicevuteController::class, 'index'])->name('ricevute.index');
+
+
+// Report
 Route::get('report', [ReportController::class, 'indiceReport'])->name('indiceReport');
+Route::post('report_filtro', [ReportController::class, 'filtroDate'])->name('filtroDate');
+
+
+// Report dettagliato
 Route::get('report_dettagliato', [ReportDettagliatoController::class, 'indiceReportDettagliato'])->name('indiceReportDettagliato');
-
-
 
