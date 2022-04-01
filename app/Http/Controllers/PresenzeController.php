@@ -14,6 +14,7 @@ class PresenzeController extends Controller
 {
     public function indicePresenze($data)
     {
+        session()->forget('filtriDate');
         $collaboratori = Collaboratore::all();
 
         $presenze = Presenza::all();
