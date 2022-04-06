@@ -58,7 +58,9 @@ Route::post('crea_aggiorna_presenza', [PresenzeController::class, 'creaAggiornaP
 
 
 // Ricevute
-Route::get('ricevute/{data}', [RicevuteController::class, 'index'])->name('ricevute.index');
+Route::get('ricevute', [RicevuteController::class, 'index'])->name('ricevute.index');
+Route::post('ricevute_filtro', [RicevuteController::class, 'filtroMese'])->name('filtroMese');
+Route::post('ricevute_nome', [RicevuteController::class, 'filtroNome'])->name('filtroNome');
 
 
 // Report

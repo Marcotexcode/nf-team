@@ -73,7 +73,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('ricevute.index', $data) }}">
+                                    <a class="dropdown-item" href="{{ route('ricevute.index') }}">
                                     Ricevute
                                     </a>
                                     <a class="dropdown-item" href="{{ route('indiceReport') }}">

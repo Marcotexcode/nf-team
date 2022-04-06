@@ -13,7 +13,6 @@ $('#modalePresenze').on('hidden.bs.modal', function(){
 });
 
 $(".datiPresenza").click(function(){
-
     let dataSelezionata = $(this).data('data-cella');
     let idCollaboratoreSelezionato =  $(this).data('id-collaboratore-cella');
 
@@ -191,4 +190,9 @@ $('#eliminaPresenza').click( function() {
             location.reload();
         }
     });
+});
+
+$('#print').click(function() {
+    //$.print('stampa');
+    alert('hello');
 });

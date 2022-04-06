@@ -36,14 +36,14 @@
                             <tr>
                                 <td>{{$collaboratore->nome}}</td>
                                 <td>{{$collaboratore->email}}</td>
-                                <td>€ {{$tipiDiPresenza[$collaboratore->id]['Intera giornata'] * $collaboratore->intera_giornata}} ({{$tipiDiPresenza[$collaboratore->id]["Intera giornata"]}})</td>
-                                <td>€ {{$tipiDiPresenza[$collaboratore->id]['Mezza giornata'] * $collaboratore->mezza_giornata}} ({{$tipiDiPresenza[$collaboratore->id]['Mezza giornata']}})</td>
-                                <td>€ {{$tipiDiPresenza[$collaboratore->id]['Giornata all\' estero'] * $collaboratore->mezza_giornata}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata all\' estero']}})</td>
-                                <td>€ {{$tipiDiPresenza[$collaboratore->id]['Giornata di formazione propria'] * $collaboratore->mezza_giornata}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata di formazione propria']}})</td>
-                                <td>€</td>
+                                <td>€ {{$importoGiornate[$collaboratore->id]['Intera giornata']}} ({{$tipiDiPresenza[$collaboratore->id]['Intera giornata']}})</td>
+                                <td>€ {{$importoGiornate[$collaboratore->id]['Mezza giornata']}} ({{$tipiDiPresenza[$collaboratore->id]['Mezza giornata']}})</td>
+                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata all\' estero']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata all\' estero']}})</td>
+                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata di formazione propria']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata di formazione propria']}})</td>
+                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata a prezzo concordato']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata a prezzo concordato']}})</td>
                                 <td>€ {{array_sum($giornataRimborso[$collaboratore->id])}}</td>
                                 <td>€ {{array_sum($giornataBonus[$collaboratore->id])}}</td>
-                                {{-- <td>€ {{array_sum($giornataBonus[$collaboratore->id]) + array_sum($giornataRimborso[$collaboratore->id])}}</td> --}}
+                                <td>€ {{array_sum($importoGiornate[$collaboratore->id]) + array_sum($giornataRimborso[$collaboratore->id]) + array_sum($giornataBonus[$collaboratore->id])}}</td>
                             </tr>
                         @endif
                     @endforeach
