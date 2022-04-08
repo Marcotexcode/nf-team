@@ -33,7 +33,7 @@ class PresenzeController extends Controller
 
         $dataPrecedente = $data->copy()->addMonth()->year . '-' . $data->copy()->subMonth()->month;
 
-        $mesi[] = $data->englishMonth;
+        $mesi[] = $data->locale('it')->monthName;
         $mesiNumero[] = $data->month;
         $giorni[] = $data->day;
         $anni[] = $data->year;

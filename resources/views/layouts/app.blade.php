@@ -20,6 +20,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        @media print {
+            .no_print_display {
+                display: none;
+            }
+        }
+    </style>
 
 </head>
 <body>
@@ -31,7 +38,7 @@
         $data = $oggi->year . '-' . $oggi->month;
     @endphp
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar  no_print_display navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     NF-Team

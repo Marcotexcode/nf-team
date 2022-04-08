@@ -11,6 +11,13 @@
 |
 */
 
+//class_alias('Barryvdh\Snappy\Facades\SnappyPdf', 'PDF');
+//$app->register(Barryvdh\Snappy\LumenServiceProvider::class);
+
+class_alias(Barryvdh\Snappy\Facades\SnappyPdf::class, 'PDF');
+class_alias(Barryvdh\Snappy\Facades\SnappyImage::class, 'SnappyImage');
+
+
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
@@ -40,6 +47,9 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
+
+
+
 
 /*
 |--------------------------------------------------------------------------

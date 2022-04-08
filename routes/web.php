@@ -9,7 +9,7 @@ use App\Http\Controllers\PresenzeController;
 use App\Http\Controllers\RicevuteController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportDettagliatoController;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
@@ -63,6 +63,10 @@ Route::post('ricevute_filtro', [RicevuteController::class, 'filtroMese'])->name(
 Route::post('ricevute_nome', [RicevuteController::class, 'filtroNome'])->name('filtroNome');
 
 
+/* snappy  */
+Route::get('download_ricevute', [RicevuteController::class, 'downloadPDF'])->name('stampaPDF');
+
+
 // Report
 Route::get('report', [ReportController::class, 'indiceReport'])->name('indiceReport');
 Route::post('report_filtro', [ReportController::class, 'filtroDate'])->name('filtroDate');
@@ -70,4 +74,5 @@ Route::post('report_filtro', [ReportController::class, 'filtroDate'])->name('fil
 
 // Report dettagliato
 Route::get('report_dettagliato', [ReportDettagliatoController::class, 'indiceReportDettagliato'])->name('indiceReportDettagliato');
+Route::post('filtro_report_dettagliato', [ReportDettagliatoController::class, 'filtroReportDettagliato'])->name('filtroReportDettagliato');
 
