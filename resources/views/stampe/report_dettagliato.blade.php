@@ -54,21 +54,21 @@
                                     @if ($presenza->importo > 0)
                                         € {{$presenza->importo}}
                                     @else
-                                        € 0
+                                        € 0.00
                                     @endif
                                 </th>
                                 <th scope="row">
                                     @if ($presenza->spese_rimborso)
                                         € {{$presenza->spese_rimborso}}
                                     @else
-                                        € 0
+                                        € 0.00
                                     @endif
                                 </th>
                                 <th scope="row">
                                     @if ($presenza->bonus)
                                         € {{$presenza->bonus}}
                                     @else
-                                        € 0
+                                        € 0.00
                                     @endif
                                 </th>
                                 <th scope="row">€ {{$presenza->importo + $presenza->spese_rimborso + $presenza->bonus}}</th>

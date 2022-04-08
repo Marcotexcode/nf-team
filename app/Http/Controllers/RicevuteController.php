@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Presenza;
-use App\Models\Collaboratore;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Classi\Ricevute;
 use PDF;
 //use Knp\Snappy\Pdf;
 
@@ -15,63 +12,14 @@ class RicevuteController extends Controller
 {
     public function index()
     {
-        // Inizializzo variabili e array
-        $data = [
-            'mese' => 0,
-            'anno' => 0,
-            'giorni' => 0
-        ];
+        $ricevuta = new Ricevute;
 
-        $totale = [];
-
-
-        // Prendo dati sessione
-        $filtroMese = session('filtroMese');
-        $filtroNome = session('filtroNome');
-
-
-        $collaboratori = Collaboratore::query();
-
-        // Se la sessione $filtroMese contiente  un dato, prendi mese e anno separati
-        if ($filtroMese) {
-
-            // Array chiave valore con mese anno giorni separati
-            $data = [
-                'mese' => Carbon::createFromFormat('Y-m', $filtroMese)->month,
-                'anno' => Carbon::createFromFormat('Y-m', $filtroMese)->year,
-                'giorni' => Carbon::createFromFormat('Y-m', $filtroMese)->daysInMonth
-            ];
-
-            // Prendo i collaboratori che hanno delle presenze che hanno come mese quelo richiesto
-            $collaboratori = $collaboratori->whereHas('presenze', function (Builder $query) use($data) {
-                $query->whereMonth('data', $data['mese'])->whereYear('data', $data['anno']);
-            })->get();
-        }
-
-        // Se la sessione contiene filtroNome stampa solo i nomi richiesti
-        if (session('filtroNome')) {
-            $collaboratori = $collaboratori->where('nome', $filtroNome);
-        }
-
-
-        // Prendi solo le presenze che hanno il mese e l'anno richiesto
-        $raccoltaPresenze = Presenza::whereMonth('data', $data['mese'])->whereYear('data', $data['anno'])->get();
-
-        // Ciclo i collaboratori
-        foreach ($collaboratori as $collaboratore) {
-
-            // Prendo l'importo totale di ogni collaboratore
-            $totaleImporto[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('importo');
-
-            // Prendo il rimborso totale di ogni collaboratore
-            $totaleRimborso[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('spese_rimborso');
-
-            // Prendo il bonus totale di ogni collaboratore
-            $totaleBonus[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('bonus');
-
-            // Sommo il totale dell' importo, rimborso, e bonus di ogni collaboratore
-            $totale[$collaboratore->id] = $totaleImporto[$collaboratore->id] + $totaleRimborso[$collaboratore->id] + $totaleBonus[$collaboratore->id];
-        }
+        $ricevutaPresenze = $ricevuta->ricevute();
+        $collaboratori = $ricevutaPresenze[0];
+        $raccoltaPresenze = $ricevutaPresenze[1];
+        $totale = $ricevutaPresenze[2];
+        $data = $ricevutaPresenze[3];
+        $filtroMese = $ricevutaPresenze[4];
 
         return view('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
     }
@@ -91,54 +39,16 @@ class RicevuteController extends Controller
 
     public function downloadPDF()
     {
-        // Prendo dati sessione
-        $filtroMese = session('filtro');
-        $filtroNome = session('filtroNome');
+        $presenze = new Ricevute;
 
-        // Inizializzo variabili e array
-        $mese = 0;
-        $anno = 0;
-        $giorni = 0;
-        $totale = [];
+        $prova = $presenze->ricevute();
+        $collaboratori = $prova[0];
+        $raccoltaPresenze = $prova[1];
+        $totale = $prova[2];
+        $data = $prova[3];
+        $filtroMese = $prova[4];
 
-        $collaboratori = Collaboratore::query();
-        $nomeCollaboratori = Collaboratore::has('presenze')->get();
-
-        // Se la sessione $filtroMese contiente  un dato, prendi mese e anno separati
-        if (session('filtro')) {
-            $mese = Carbon::createFromFormat('Y-m', $filtroMese['filtroMese'])->month;
-            $anno = Carbon::createFromFormat('Y-m', $filtroMese['filtroMese'])->year;
-            $giorni = Carbon::createFromFormat('Y-m', $filtroMese['filtroMese'])->daysInMonth;
-
-            // Prendo i collaboratori che hanno delle presenze che hanno come mese quelo richiesto
-            $collaboratori = $collaboratori->whereHas('presenze', function (Builder $query) use($mese, $anno) {
-                $query->whereMonth('data', $mese)->whereYear('data', $anno);
-            })->get();
-        }
-
-        // Se la sessione contiene filtroNome stampa solo i nomi richiesti
-        if (session('filtroNome')) {
-            $collaboratori = $collaboratori->where('nome', $filtroNome);
-        }
-
-
-        // Prendi solo le presenze che hanno il mese e l'anno richiesto
-        $raccoltaPresenze = Presenza::whereMonth('data', $mese)->whereYear('data', $anno)->get();
-
-        // Ciclo i collaboratori
-        foreach ($collaboratori as $collaboratore) {
-            // Prendo l'importo totale di ogni collaboratore
-            $totaleImporto[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('importo');
-            // Prendo il rimborso totale di ogni collaboratore
-            $totaleRimborso[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('spese_rimborso');
-            // Prendo il bonus totale di ogni collaboratore
-            $totaleBonus[$collaboratore->id] = $raccoltaPresenze->where('collaborator_id', $collaboratore->id)->sum('bonus');
-
-            // Sommo il totale dell' importo, rimborso, e bonus di ogni collaboratore
-            $totale[$collaboratore->id] = $totaleImporto[$collaboratore->id] + $totaleRimborso[$collaboratore->id] + $totaleBonus[$collaboratore->id];
-        }
-
-        $ricevutePDF = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'mese', 'anno', 'giorni', 'nomeCollaboratori', 'filtroMese'));
+        $ricevutePDF = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
         // $ricevutePDF = new Pdf('/usr/local/bin/wkhtmltopdf.sh');
         // $ricevutePDF->setTimeout(5);
         return $ricevutePDF->download('ricevuta.pdf');

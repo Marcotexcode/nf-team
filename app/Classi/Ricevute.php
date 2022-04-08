@@ -1,37 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Classi;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use App\Models\Presenza;
 use App\Models\Collaboratore;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
-class Presenza extends Model
-{
-    use HasFactory;
-
-    protected $table = 'presenze';
-
-    protected $fillable = [
-        'data',
-        'collaborator_id',
-        'importo',
-        'tipo_di_presenza',
-        'luogo',
-        'descrizione',
-        'spese_rimborso',
-        'bonus',
-    ];
-
-    public function collaboratori()
-    {
-        return $this->belongsTo(Collaboratore::class, 'collaborator_id', 'id');
-    }
-
+class Ricevute {
 
     public function ricevute()
     {
