@@ -71,7 +71,7 @@
                                         € 0.00
                                     @endif
                                 </th>
-                                <th scope="row">€ {{$presenza->importo + $presenza->spese_rimborso + $presenza->bonus}}</th>
+                                <th scope="row">€ {{number_format($presenza->importo + $presenza->spese_rimborso + $presenza->bonus,2)}}</th>
                             </tr>
                         @endforeach
                     </tbody>

@@ -36,14 +36,14 @@
                             <tr>
                                 <td>{{$collaboratore->nome}}</td>
                                 <td>{{$collaboratore->email}}</td>
-                                <td>€ {{$importoGiornate[$collaboratore->id]['Intera giornata']}} ({{$tipiDiPresenza[$collaboratore->id]['Intera giornata']}})</td>
-                                <td>€ {{$importoGiornate[$collaboratore->id]['Mezza giornata']}} ({{$tipiDiPresenza[$collaboratore->id]['Mezza giornata']}})</td>
-                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata all\' estero']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata all\' estero']}})</td>
-                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata di formazione propria']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata di formazione propria']}})</td>
-                                <td>€ {{$importoGiornate[$collaboratore->id]['Giornata a prezzo concordato']}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata a prezzo concordato']}})</td>
-                                <td>€ {{array_sum($giornataRimborso[$collaboratore->id])}}</td>
-                                <td>€ {{array_sum($giornataBonus[$collaboratore->id])}}</td>
-                                <td>€ {{array_sum($importoGiornate[$collaboratore->id]) + array_sum($giornataRimborso[$collaboratore->id]) + array_sum($giornataBonus[$collaboratore->id])}}</td>
+                                <td>€ {{number_format($importoGiornate[$collaboratore->id]['Intera giornata'],2)}} ({{$tipiDiPresenza[$collaboratore->id]['Intera giornata']}})</td>
+                                <td>€ {{number_format($importoGiornate[$collaboratore->id]['Mezza giornata'],2)}} ({{$tipiDiPresenza[$collaboratore->id]['Mezza giornata']}})</td>
+                                <td>€ {{number_format($importoGiornate[$collaboratore->id]['Giornata all\' estero'],2)}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata all\' estero']}})</td>
+                                <td>€ {{number_format($importoGiornate[$collaboratore->id]['Giornata di formazione propria'],2)}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata di formazione propria']}})</td>
+                                <td>€ {{number_format($importoGiornate[$collaboratore->id]['Giornata a prezzo concordato'],2)}} ({{$tipiDiPresenza[$collaboratore->id]['Giornata a prezzo concordato']}})</td>
+                                <td>€ {{number_format(array_sum($giornataRimborso[$collaboratore->id]),2)}}</td>
+                                <td>€ {{number_format(array_sum($giornataBonus[$collaboratore->id]),2)}}</td>
+                                <td>€ {{number_format(array_sum($importoGiornate[$collaboratore->id]) + array_sum($giornataRimborso[$collaboratore->id]) + array_sum($giornataBonus[$collaboratore->id]),2)}}</td>
                             </tr>
                         @endif
                     @endforeach

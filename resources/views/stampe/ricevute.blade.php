@@ -150,7 +150,7 @@
                                     <td colspan="2"></td>
                                     <td>Totale imponibile</td>
                                     <td>
-                                        € {{$totale[$collaboratore->id]}}
+                                        € {{number_format($totale[$collaboratore->id],2)}}
                                     </td>
                                 </tr>
                             </tbody>

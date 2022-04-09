@@ -16,16 +16,17 @@ class ReportDettagliatoController extends Controller
         /* Inizializzo variabili e array */
         $mese = 0;
         $anno = 0;
+        $meseTesto = 'nessuno';
 
         /* Creo una condizione che se in sessione c'è un dato allora dividimi il mese e l'anno
          * in due variabili */
         if ($filtroMese) {
             $mese = Carbon::createFromFormat('Y-m', $filtroMese)->month;
             $anno = Carbon::createFromFormat('Y-m', $filtroMese)->year;
+            /* Passare il mese non come numero ma come testo e in italiano */
+            $meseTesto = Carbon::createFromFormat('Y-m', $filtroMese)->locale('it')->monthName;
         }
 
-        /* Passare il mese non come numero ma come testo e in italiano */
-        $meseTesto = Carbon::createFromFormat('Y-m', $filtroMese)->locale('it')->monthName;
 
         /* Passo solo le presenze con i collaboratori, che hanno il mese e l'anno richiesti  */
         $presenze = Presenza::with('collaboratori')->whereMonth('data', $mese)->whereYear('data', $anno)->get();

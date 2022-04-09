@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 
@@ -27,9 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $nomeUtente = User::where('id', Auth::user()->id)->value('name');
 
-
-        return view('home');
+        return view('home', compact('nomeUtente'));
     }
 
 }

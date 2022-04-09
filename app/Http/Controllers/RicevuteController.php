@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Classi\Ricevute;
 use PDF;
+use App;
 //use Knp\Snappy\Pdf;
-
+//use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class RicevuteController extends Controller
 {
@@ -24,7 +25,6 @@ class RicevuteController extends Controller
         return view('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
     }
 
-
     public function filtroMese(Request $request)
     {
         session()->put('filtroMese', $request->meseAnno);
@@ -39,29 +39,34 @@ class RicevuteController extends Controller
 
     public function downloadPDF()
     {
-        $presenze = new Ricevute;
+        $ricevuta = new Ricevute;
 
-        $prova = $presenze->ricevute();
-        $collaboratori = $prova[0];
-        $raccoltaPresenze = $prova[1];
-        $totale = $prova[2];
-        $data = $prova[3];
-        $filtroMese = $prova[4];
+        $ricevutaPresenze = $ricevuta->ricevute();
+        $collaboratori = $ricevutaPresenze[0];
+        $raccoltaPresenze = $ricevutaPresenze[1];
+        $totale = $ricevutaPresenze[2];
+        $data = $ricevutaPresenze[3];
+        $filtroMese = $ricevutaPresenze[4];
 
-        $ricevutePDF = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
-        // $ricevutePDF = new Pdf('/usr/local/bin/wkhtmltopdf.sh');
-        // $ricevutePDF->setTimeout(5);
-        return $ricevutePDF->download('ricevuta.pdf');
-
+        $pdf = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
+        //$pdf->loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
+        return $pdf->download();
     }
+
 }
 
 
+//$ricevutePDF = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
+//$ricevutePDF->download('ricevuta.pdf')
 
 
 
 
-
+// $ricevutePDF = new Pdf('/usr/local/bin/wkhtmltopdf.sh');
+// $ricevutePDF->setTimeout(5);
+// $snappy = PDF::generate(' http://www.google.com ', '/tmp/testPdf.pdf');
+// $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+// $ricevutePDF->generateFromHtml('<h1>Bill</h1><p>You owe me money, dude.</p>', '/tmp/bill-123.pdf');
 
 
 
