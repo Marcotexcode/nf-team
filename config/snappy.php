@@ -37,7 +37,9 @@ return [
         'enabled' => true,
         'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
         'timeout' => false,
-        'options' => [],
+        'options' => [
+            'print-media-type' => true,
+        ],
         'env'     => [],
     ],
 

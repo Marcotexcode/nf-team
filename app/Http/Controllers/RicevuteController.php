@@ -39,6 +39,7 @@ class RicevuteController extends Controller
 
     public function downloadPDF()
     {
+
         $ricevuta = new Ricevute;
 
         $ricevutaPresenze = $ricevuta->ricevute();
@@ -49,7 +50,12 @@ class RicevuteController extends Controller
         $filtroMese = $ricevutaPresenze[4];
 
         $pdf = PDF::loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
-        //$pdf->loadView('stampe.ricevute', compact('collaboratori', 'raccoltaPresenze', 'totale', 'data', 'filtroMese'));
+
+        // $pdf->setOption([
+        //     'disable-forms' => 'no_print_display'
+        // ]);
+       // dd($pdf);
+
         return $pdf->download();
     }
 
