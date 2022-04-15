@@ -17,7 +17,7 @@
         </div>
         <div class="row no_print_display">
             <div class="col">
-                <button onclick="window.print()" class="btn btn-primary">Stampa</button>
+                <button onclick="window.print()" class="btn btn-primary"><i class="fa-solid fa-print"></i> Stampa</button>
             </div>
         </div>
         <div class="row">

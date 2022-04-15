@@ -101,6 +101,7 @@ $( "#creaAggiornaPresenza" ).submit(function(event) {
         },
 
         success:function(response){
+            console.log(response[1]);
             // Se il record non è stato creato
             if (response.status == 400) {
                 // messaggio di errore con validate
@@ -133,7 +134,6 @@ $( "#creaAggiornaPresenza" ).submit(function(event) {
 
                 for(var i=0; i < response.length; i++){
 
-                    console.log(response[i].tipo_di_presenza);
                     idDataPresenza = response[i].collaborator_id + '-' + response[i].data;
 
                     let colore = 0;

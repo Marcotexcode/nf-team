@@ -10,7 +10,7 @@
 
     <!-- Scripts -->
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer></script> --}}
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ URL::asset('js/app.js') }}" defer></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -21,8 +21,7 @@
 
     <!-- Styles -->
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link href="{{asset('css/app.css')}}" rel="stylesheet">
 
     <style>
         @media print {
@@ -107,15 +106,16 @@
                                     <a class="dropdown-item" href="{{ route('collaboratori.index') }}">
                                        Collaboratori
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('utenti.index') }}">
-                                        Utenti
-                                    </a>
+                                    @can('administer')
+                                        <a class="dropdown-item" href="{{ route('utenti.index') }}">
+                                            Utenti
+                                        </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    @endcan
                                 </div>
-
                             </li>
 
                             <li class="nav-item dropdown">

@@ -18,18 +18,16 @@
                     <th scope="row">{{$utente->id}}</th>
                     <td>{{$utente->name}}</td>
                     <td>{{$utente->email}}</td>
-                    @can('administer')
-                        <form action="{{route('utenti.destroy', $utente->id)}}" method="POST">
-                            <td>
-                                <a class="btn btn-primary" href="{{ route('utenti.edit', $utente->id) }}">Modifica</a>
-                            </td>
-                            @csrf
-                            @method('DELETE')
-                            <td>
-                                <button type="submit"  class="btn btn-danger">Elimina</button>
-                            </td>
-                        </form>
-                    @endcan
+                    <form action="{{route('utenti.destroy', $utente->id)}}" method="POST">
+                        <td>
+                            <a class="btn btn-primary" href="{{ route('utenti.edit', $utente->id) }}">Modifica</a>
+                        </td>
+                        @csrf
+                        @method('DELETE')
+                        <td>
+                            <button type="submit"  class="btn btn-danger">Elimina</button>
+                        </td>
+                    </form>
                   </tr>
                 @endforeach
             </tbody>

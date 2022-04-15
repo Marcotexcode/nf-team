@@ -98,8 +98,7 @@ class PresenzeController extends Controller
         $arrPresenzeCreate = [];
 
         for ($i=$request->data; $i <= $request->finoA; $i++) {
-
-            $presenza =  Presenza::updateOrCreate(
+            $presenza = Presenza::updateOrCreate(
                 [
                     'data' => $i, 'collaborator_id' => $request->idColl
                 ],

@@ -14,8 +14,7 @@ class PresenzaFactory extends Factory
     public function definition()
     {
         return [
-            'data_inizio' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'data_fine' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'data' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
             'collaborator_id'=> 1,
             'importo' => $this->faker->randomDigit(),
             'tipo_di_presenza' => $this->faker->firstNameMale(),

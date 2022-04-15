@@ -32,12 +32,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 // Utenti
-Route::get('utenti_index', [UtentiController::class, 'index'])->name('utenti.index');
-Route::get('utenti/{utente}', [UtentiController::class, 'edit'])->name('utenti.edit');
-Route::get('utenti_create', [UtentiController::class, 'create'])->name('utenti.create');
-Route::put('utenti/{utente}', [UtentiController::class, 'update'])->name('utenti.update');
-Route::delete('utenti/{utente}', [UtentiController::class, 'destroy'])->name('utenti.destroy');
-Route::post('utenti_store', [UtentiController::class, 'store'])->name('utenti.store');
+Route::middleware('can:administer')->group(function () {
+    Route::get('utenti_index', [UtentiController::class, 'index'])->name('utenti.index');
+    Route::get('utenti/{utente}', [UtentiController::class, 'edit'])->name('utenti.edit');
+    Route::get('utenti_create', [UtentiController::class, 'create'])->name('utenti.create');
+    Route::put('utenti/{utente}', [UtentiController::class, 'update'])->name('utenti.update');
+    Route::delete('utenti/{utente}', [UtentiController::class, 'destroy'])->name('utenti.destroy');
+    Route::post('utenti_store', [UtentiController::class, 'store'])->name('utenti.store');
+});
 
 
 // Collaboratori

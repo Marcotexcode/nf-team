@@ -11,6 +11,8 @@
                 <input class="mb-2" type="month" name="meseAnno" id="meseAnno" value="{{$filtroMese}}">
                 <button class="btn btn-primary text-white mx-3">CONFERMA</button>
             </form>
+
+
             <form action="{{route('filtroNome')}}" class="my-5" method="POST">
                 @csrf
                 <div class="d-xl-flex justify-content-between">
@@ -28,7 +30,7 @@
                             </select>
                         </div>
                         <div>
-                            <button class="btn btn-primary">Filtra</button>
+                            <button class="btn btn-primary"><i class="fa-solid fa-filter"></i> Filtra</button>
                         </div>
                     </div>
                     <div>
@@ -37,10 +39,10 @@
                                 <span>Per i risultati presenti: </span>
                             </div>
                             <div class="col-auto mx-2">
-                                <button onclick="window.print()" class="btn btn-primary">Stampa</button>
+                                <button onclick="window.print()" class="btn btn-primary"><i class="fa-solid fa-print"></i> Stampa</button>
                             </div>
                             <div class="col-auto mx-2">
-                                <a href="download_ricevute" class="btn btn-primary">Scarica PDF</a>
+                                <a href="download_ricevute" class="btn btn-primary"><i class="fa-solid fa-file-pdf"></i> Scarica PDF</a>
                             </div>
                         </div>
                     </div>
@@ -49,19 +51,20 @@
         </div>
         <div class="row">
             @foreach ($collaboratori as $collaboratore)
-                <div onload="window.print();" class="col-12  border border-dark p-5 mt-5">
+
+                <div onload="window.print();" class="col-12 border border-dark p-5 mt-5">
                     <div class="offset-7  col-5 text-danger fw-bold">
                         <span>periodo report da data 01-{{$data['mese']}}-{{$data['anno']}} a data {{$data['giorni']}}-{{$data['mese']}}-{{$data['anno']}}</span>
                     </div>
                     <div class="row">
                         <div class="col3">
-                            {{$collaboratore->nome}}
+                            Nome: {{$collaboratore->nome}}
                             <br>
-                            {{$collaboratore->citta}}
+                            Citta: {{$collaboratore->citta}}
                             <br>
-                            {{$collaboratore->indirizzo}}
+                            Indirizzo: {{$collaboratore->indirizzo}}
                             <br>
-                            {{$collaboratore->telefono}}
+                            Tel: {{$collaboratore->telefono}}
                         </div>
                     </div>
                     <div class="row">

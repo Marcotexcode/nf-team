@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 
 class UtentiController extends Controller
 {
@@ -53,11 +55,14 @@ class UtentiController extends Controller
             'password' => 'required',
             'level' => 'required',
         ]);
-
-        User::create($request->all());
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'level' => $request->level
+        ]);
 
         return redirect()->route('utenti.index');
-
     }
 
 }
