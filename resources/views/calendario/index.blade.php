@@ -26,7 +26,7 @@
                                         <td>{{$collaboratore->nome}}</td>
                                         @for ($i=1; $i <= $data->daysInMonth; $i++)
                                             <td scope="col" class="p-0">
-                                                <div data-bs-toggle="modal"  id="pro" data-columns="3"  class="add  p-2 datiPres" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                <div data-bs-toggle="modal"  id="pro" data-nome="{{$collaboratore->nome}}" data-data=""  class="add  p-2 datiCollaboratore" data-bs-target="#modalePresenze">&nbsp;</div>
                                             </td>
                                         @endfor
                                     </tr>
@@ -38,11 +38,11 @@
             </div>
         </div>
          <!-- Modal -->
-         <div class="modal fade" id="modalePresenze" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalePresenze" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"></h5>
+                        <h5 class="modal-title" id="nomeCollaboratore"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -110,21 +110,23 @@
                 </div>
             </div>
         </div>
-        <div data-bs-toggle="modal"  id="pro" data-columns="3"  class="add clicca  p-2 datiPres" data-bs-target="#modalePresenze">&nbsp;as</div>
-        {{-- <div data-bs-toggle="modal"  id="pro" data-columns="3"  class="add clicca  p-2 datiPres" data-bs-target="#modalePresenze">&nbsp;as</div> --}}
+
 
         <script>
-            let myElement = document.querySelectorAll('.clicca');
+            // Dati collaboratore
+            let datiCollaboratore = document.querySelectorAll('.datiCollaboratore');
 
-            myElement.addEventListener('click', function (event) {
+            for (var i = 0; i < datiCollaboratore.length; i++) {
 
-                console.log("Hi! I  am a new Button.");
-            });
+                let nomeCollaboratore  = datiCollaboratore[i].dataset.nome;
 
-            // myElement.addEventListener("click", clickMe);
-            // function clickMe(){
-            //     console.log("Hi! I  am a new Button.");
-            // }
+                datiCollaboratore[i].addEventListener('click', function(event) {
+                    var inputValue = document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
+                });
+            }
+
+
+
         </script>
     </div>
 @endsection
@@ -133,3 +135,24 @@
 {{-- //const article = document.querySelector('.datiPres');
 
 //console.log(article.dataset.columns); --}}
+
+
+
+
+{{-- // let myElement = document.querySelector('.clicca');
+
+// myElement.addEventListener('click', function (event) {
+
+//         console.log("Hi! I  am a new Button.");
+// });
+
+// // NodeList.prototype.forEach = Array.prototype.forEach;
+
+// document.querySelectorAll('.clicca').forEach(function{
+//     console.log("Hi! I  am a new Button.");
+// });
+
+// myElement.addEventListener("click", clickMe);
+// function clickMe(){
+//     console.log("Hi! I  am a new Button.");
+// } --}}
