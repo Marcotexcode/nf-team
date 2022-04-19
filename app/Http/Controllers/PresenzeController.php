@@ -31,7 +31,7 @@ class PresenzeController extends Controller
 
         $dataSuccessiva = $data->copy()->addMonth()->year . '-' . $data->copy()->addMonth()->month;
 
-        $dataPrecedente = $data->copy()->addMonth()->year . '-' . $data->copy()->subMonth()->month;
+        $dataPrecedente = $data->copy()->subMonth()->year . '-' . $data->copy()->subMonth()->month;
 
         $mesi[] = $data->locale('it')->monthName;
 

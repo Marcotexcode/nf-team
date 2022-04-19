@@ -9,6 +9,7 @@ use App\Http\Controllers\PresenzeController;
 use App\Http\Controllers\RicevuteController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportDettagliatoController;
+use App\Http\Controllers\CalendarioController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -57,6 +58,9 @@ Route::get('datiPresenza', [PresenzeController::class, 'datiPresenza']);
 Route::get('datiCollaboratore', [PresenzeController::class, 'datiCollaboratore']);
 Route::delete('eliminaPresenza', [PresenzeController::class, 'destroy']);
 Route::post('crea_aggiorna_presenza', [PresenzeController::class, 'creaAggiornaPresenza'])->name('presenze.creaAggiornaPresenza');
+
+// Calendario con ajax e vanillaJs
+Route::get('calendario/{data}', [CalendarioController::class, 'indiceCalendario'])->name('calendario.index');
 
 
 // Ricevute

@@ -14,7 +14,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -75,6 +74,11 @@
                             <li class="nav-item ">
                                 <a id="navbarDropdown" class="nav-link" href="{{ route('presenze.index', $data )}}">
                                     Presenze
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a id="navbarDropdown" class="nav-link" href="{{ route('calendario.index', $data )}}">
+                                    Calendario
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
