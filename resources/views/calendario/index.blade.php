@@ -4,37 +4,55 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="d-flex justify-content-center">
-                    <a class="btn btn-primary my-2" href="{{ route('calendario.index', ["data" => $dataPrecedente]) }}"><i class="fas p-2 align-middle fa-arrow-left"></i></a>
-                    <span class="text-center my-2 mx-5"><h2 class="text-capitalize">{{$nomeMese}} - {{$anno}}</h2></span>
-                    <a class="btn btn-primary my-2" href="{{ route('calendario.index', ["data" => $dataSuccessiva]) }}"><i class="fas p-2 align-middle fa-arrow-right"></i></a>
-                </div>
-                <div class="row"><i class="fa-solid fa-right"></i>
-                    <div class="col">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">COLL</th>
-                                    @for ($i=1; $i <= $data->daysInMonth; $i++)
-                                        <th scope="col">{{$i}}</th>
-                                    @endfor
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($collaboratori as $collaboratore)
+                @foreach ($mesiNumero as $meseNumero)
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-primary my-2" href="{{ route('calendario.index', ["data" => $dataPrecedente]) }}"><i class="fas p-2 align-middle fa-arrow-left"></i></a>
+                        <span class="text-center my-2 mx-5"><h2 class="text-capitalize">{{$nomeMese}} - {{$anno}}</h2></span>
+                        <a class="btn btn-primary my-2" href="{{ route('calendario.index', ["data" => $dataSuccessiva]) }}"><i class="fas p-2 align-middle fa-arrow-right"></i></a>
+                    </div>
+                    <div class="row"><i class="fa-solid fa-right"></i>
+                        <div class="col">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>{{$collaboratore->nome}}</td>
+                                        <th scope="col">COLL</th>
                                         @for ($i=1; $i <= $data->daysInMonth; $i++)
-                                            <td scope="col" class="p-0">
-                                                <div data-bs-toggle="modal"  id="pro" data-nome="{{$collaboratore->nome}}" data-data=""  class="add  p-2 datiCollaboratore" data-bs-target="#modalePresenze">&nbsp;</div>
-                                            </td>
+                                            <th scope="col">{{$i}}</th>
                                         @endfor
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($collaboratori as $collaboratore)
+                                        <tr>
+                                            <td>{{$collaboratore->nome}}</td>
+                                            @for ($i=1; $i <= $data->daysInMonth; $i++)
+                                                <td scope="col" class="p-0">
+                                                    @php
+                                                    if ($i < 10) {
+                                                        $giorno = '0'. $i;
+                                                    } else {
+                                                        $giorno = $i;
+                                                    }
+
+                                                    if ($meseNumero < 10) {
+                                                        $mese = '0'. $meseNumero;
+                                                    } else {
+                                                        $mese = $meseNumero;
+                                                    }
+
+                                                    $dataCella = $anno . '-' . $mese . '-' . $giorno;
+                                                    @endphp
+
+                                                    <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" class="add p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                </td>
+                                            @endfor
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
          <!-- Modal -->
@@ -114,45 +132,23 @@
 
         <script>
             // Dati collaboratore
-            let datiCollaboratore = document.querySelectorAll('.datiCollaboratore');
+            let datiCollaboratore = document.querySelectorAll('.datiColl');
 
             for (var i = 0; i < datiCollaboratore.length; i++) {
 
-                let nomeCollaboratore  = datiCollaboratore[i].dataset.nome;
+                let nomeCollaboratore = datiCollaboratore[i].dataset.nome;
+                let idCollaboratore = datiCollaboratore[i].dataset.id;
+                let dataPresenza = datiCollaboratore[i].dataset.data;
 
                 datiCollaboratore[i].addEventListener('click', function(event) {
-                    var inputValue = document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
+                    var nomeColl = document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
+                    var idColl = document.getElementById("idCollaboratore").textContent = idCollaboratore;
+                    var dataPres = document.getElementById("aggiungiDataSpan").textContent = dataPresenza;
                 });
             }
-
-
 
         </script>
     </div>
 @endsection
 
 
-{{-- //const article = document.querySelector('.datiPres');
-
-//console.log(article.dataset.columns); --}}
-
-
-
-
-{{-- // let myElement = document.querySelector('.clicca');
-
-// myElement.addEventListener('click', function (event) {
-
-//         console.log("Hi! I  am a new Button.");
-// });
-
-// // NodeList.prototype.forEach = Array.prototype.forEach;
-
-// document.querySelectorAll('.clicca').forEach(function{
-//     console.log("Hi! I  am a new Button.");
-// });
-
-// myElement.addEventListener("click", clickMe);
-// function clickMe(){
-//     console.log("Hi! I  am a new Button.");
-// } --}}

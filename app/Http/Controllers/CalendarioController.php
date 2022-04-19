@@ -22,8 +22,9 @@ class CalendarioController extends Controller
         $dataPrecedente = $data->copy()->subMonth()->year . '-' . $data->copy()->subMonth()->month;
 
         $nomeMese = $data->locale('it')->monthName;
+        $mesiNumero[] = $data->month;
         $anno = $data->year;
 
-        return view('calendario.index', compact('data', 'dataSuccessiva', 'dataPrecedente', 'collaboratori', 'nomeMese', 'anno'));
+        return view('calendario.index', compact('data', 'mesiNumero', 'dataSuccessiva', 'dataPrecedente', 'collaboratori', 'nomeMese', 'anno'));
     }
 }
