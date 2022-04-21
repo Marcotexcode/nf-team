@@ -12,7 +12,7 @@
                     </div>
                     <div class="row"><i class="fa-solid fa-right"></i>
                         <div class="col">
-                            <table class="table table-bordered">
+                            <table id="dati" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th scope="col">COLL</th>
@@ -24,7 +24,7 @@
                                 <tbody>
                                     @foreach ($collaboratori as $collaboratore)
                                         <tr>
-                                            <td>{{$collaboratore->nome}}</td>
+                                            <td class="nome" data-nome="{{$collaboratore->nome}}">{{$collaboratore->nome}}</td>
                                             @for ($i=1; $i <= $data->daysInMonth; $i++)
                                                 <td scope="col" class="p-0">
                                                     @php
@@ -69,13 +69,12 @@
                                                             }else {
                                                                 $colore = 'viola';
                                                             }
+
                                                         @endphp
-
-                                                        <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add {{$colore}} p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                        <div data-bs-toggle="modal" data-nome="{{$collaboratore->nome}}" data-id="{{$collaboratore->id}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add {{$colore}} p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
                                                     @else
-                                                        <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                        <div data-bs-toggle="modal" data-nome="{{$collaboratore->nome}}" data-id="{{$collaboratore->id}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;</div>
                                                     @endif
-
                                                 </td>
                                             @endfor
                                         </tr>
@@ -163,36 +162,25 @@
                 </div>
             </div>
         </div>
-
         <script>
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             // Prendere dati selezionati  e inserirli nel modale
-            // Prendo i dati di ogni cella con il foreach
-            document.querySelectorAll('.datiColl').forEach(element => {
-                // Prendo i dati che mi srvono e li salvo in una variabile
-                let nomeCollaboratore = element.dataset.nome;
-                let idCollaboratore = element.dataset.id;
-                let dataPresenza = element.dataset.data;
+            document.querySelector("#dati").addEventListener("click", function(event){
+                console.log(event.target.tagName);
 
-                // al click della cella
-                element.addEventListener('click', function(event) {
+                if (event.target.tagName == 'DIV') {
 
-                    var nomeColl = document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
-                    var idColl = document.getElementById("idCollaboratore").value = idCollaboratore;
-                    var dataPres = document.getElementById("aggiungiDataSpan").textContent = dataPresenza;
-                    var aggiungiDataPres = document.getElementById("aggiungiData").value = dataPresenza;
+                    let nomeCollaboratore = event.target.dataset.nome;
+                    let idCollaboratore = event.target.dataset.id;
+                    let dataPresenza = event.target.dataset.data;
 
+                    document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
+                    document.getElementById("idCollaboratore").value = idCollaboratore;
+                    document.getElementById("aggiungiDataSpan").textContent = dataPresenza;
+                    document.getElementById("aggiungiData").value = dataPresenza;
+                    document.getElementById("fino_a").value = dataPresenza;
 
-                    var aggiungiDataPres = document.getElementById("fino_a").value = dataPresenza;
-
-
-                    // Prendo dati per la select tipo di presenza  con una chiamata axios
-                    axios.get("/datiColl", { params: { idColl } })
+                    axios.get("/datiColl", { params: { idCollaboratore } })
                     .then(function(response) {
                         document.getElementById('intera').setAttribute('data-tariffa', response.data.intera_giornata);
                         document.getElementById('mezza').setAttribute('data-tariffa', response.data.mezza_giornata);
@@ -206,14 +194,13 @@
                     });
 
                     // Prendo dati presenze
-                    axios.get("/datiPres", { params: { idColl, dataPresenza } })
+                    axios.get("/datiPres", { params: { idCollaboratore, dataPresenza } })
                     .then(function(response) {
 
                         document.getElementById('luogo').setAttribute('value', response.data.luogo);
                         document.getElementById('importo').setAttribute('value', response.data.importo);
                         document.getElementById('idCollaboratore').setAttribute('value', response.data.collaborator_id);
                         document.getElementById('aggiungiData').setAttribute('value', response.data.data);
-                       // document.getElementById('tipo_di_presenza').setAttribute('value', response.data.tipo_di_presenza); // non lo prende
                         document.getElementById('descrizione').innerHTML = response.data.descrizione;
                         document.getElementById('spese_rimborso').setAttribute('value', response.data.spese_rimborso);
                         document.getElementById('bonus').setAttribute('value', response.data.bonus);
@@ -249,11 +236,9 @@
                         }
                     })
                     .catch(function(error) {
-
                         console.log(error);
-
                     });
-                });
+                }
             });
 
             // Cambio importo
@@ -267,46 +252,46 @@
                 }
             });
 
-            // Inviare dati con vanilla e axios
+            // Inviare dati con  axios
             document.querySelector("#creaAggiorna").addEventListener("submit", function(e){
                 e.preventDefault();
 
                 axios.post("/crea_aggiorna", {
-                        luogo: document.getElementById('luogo').value,
-                        importo: document.getElementById('importo').value,
-                        idColl: document.getElementById('idCollaboratore').value,
-                        data: document.getElementById('aggiungiData').value,
-                        tipoPresenza: document.getElementById('tipo_di_presenza').value,
-                        descrizione: document.getElementById('descrizione').value,
-                        speseRimborso: document.getElementById('spese_rimborso').value,
-                        bonus: document.getElementById('bonus').value,
-                        finoA: document.getElementById('fino_a').value,
-                    })
+                    luogo: document.getElementById('luogo').value,
+                    importo: document.getElementById('importo').value,
+                    idColl: document.getElementById('idCollaboratore').value,
+                    data: document.getElementById('aggiungiData').value,
+                    tipoPresenza: document.getElementById('tipo_di_presenza').value,
+                    descrizione: document.getElementById('descrizione').value,
+                    speseRimborso: document.getElementById('spese_rimborso').value,
+                    bonus: document.getElementById('bonus').value,
+                    finoA: document.getElementById('fino_a').value,
+                })
                 .then(function(response) {
-                    if (response.status == 200) {
                         $('#modalePresenze').modal('hide');
-                    }
 
                     let idDataPresenza = 0;
-                    console.log(response.data);
+
                     for(var i=0; i < response.data.length; i++){
                         // Creo una variabile uguale all'id che ho messo nel div cella
                         idDataPresenza = response.data[i].collaborator_id + '-' + response.data[i].data;
 
                         let colore = 0;
-                        if (response.data[i].tipo_di_presenza == 'Intera giornata') {
+                        let tipoPresenza = response.data[i].tipo_di_presenza;
+
+                        if (tipoPresenza == 'Intera giornata') {
                             colore = '#35964b';
                         }
-                        if(response.data[i].tipo_di_presenza == 'Mezza giornata') {
+                        if(tipoPresenza == 'Mezza giornata') {
                             colore = '#68aeca';
                         }
-                        if(response.data[i].tipo_di_presenza == 'Giornata all\' estero') {
+                        if(tipoPresenza == 'Giornata all\' estero') {
                             colore = '#c7c422';
                         }
-                        if(response.data[i].tipo_di_presenza == 'Giornata di formazione propria') {
+                        if(tipoPresenza == 'Giornata di formazione propria') {
                             colore = '#757442';
                         }
-                        if(response.data[i].tipo_di_presenza == 'Giornata a prezzo concordato') {
+                        if(tipoPresenza == 'Giornata a prezzo concordato') {
                             colore = '#7e467e';
                         }
                         if (response.data[i].spese_rimborso) {
@@ -335,3 +320,85 @@
 @endsection
 
 
+{{-- // Prendere dati selezionati  e inserirli nel modale
+            // Prendo i dati di ogni cella con il foreach
+            // document.querySelectorAll('.datiColl').forEach(element => {
+
+            //     // Prendo i dati che mi srvono e li salvo in una variabile
+            //     let nomeCollaboratore = element.dataset.nome;
+            //     let idCollaboratore = element.dataset.id;
+            //     let dataPresenza = element.dataset.data;
+
+            //     // al click della cella
+            //     element.addEventListener('click', function(event) {
+
+            //        // document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
+            //         // document.getElementById("idCollaboratore").value = idCollaboratore;
+            //         // document.getElementById("aggiungiDataSpan").textContent = dataPresenza;
+            //         // document.getElementById("aggiungiData").value = dataPresenza;
+            //         // document.getElementById("fino_a").value = dataPresenza;
+
+
+            //         // Prendo dati per la select tipo di presenza  con una chiamata axios
+            //         axios.get("/datiColl", { params: { idCollaboratore } })
+            //         .then(function(response) {
+            //             document.getElementById('intera').setAttribute('data-tariffa', response.data.intera_giornata);
+            //             document.getElementById('mezza').setAttribute('data-tariffa', response.data.mezza_giornata);
+            //             document.getElementById('estera').setAttribute('data-tariffa', response.data.giornata_estero);
+            //             document.getElementById('formazione').setAttribute('data-tariffa', response.data.giornata_formazione);
+            //         })
+            //         .catch(function(error) {
+
+            //             console.log(error);
+
+            //         });
+
+            //         // Prendo dati presenze
+            //         axios.get("/datiPres", { params: { idCollaboratore, dataPresenza } })
+            //         .then(function(response) {
+
+            //             document.getElementById('luogo').setAttribute('value', response.data.luogo);
+            //             document.getElementById('importo').setAttribute('value', response.data.importo);
+            //             document.getElementById('idCollaboratore').setAttribute('value', response.data.collaborator_id);
+            //             document.getElementById('aggiungiData').setAttribute('value', response.data.data);
+            //             document.getElementById('descrizione').innerHTML = response.data.descrizione;
+            //             document.getElementById('spese_rimborso').setAttribute('value', response.data.spese_rimborso);
+            //             document.getElementById('bonus').setAttribute('value', response.data.bonus);
+            //             document.getElementById('fino_a').setAttribute('value', response.data.luogo);
+
+            //             // Il tipo di presenza nella modifica
+            //             if (response.data.tipo_di_presenza == 'Intera giornata') {
+            //                 document.getElementById('intera').selected = 'selected';
+            //             }
+            //             if(response.data.tipo_di_presenza == 'Mezza giornata') {
+            //                 document.getElementById('mezza').selected = 'selected';
+            //             }
+            //             if (response.data.tipo_di_presenza == 'Giornata all\' estero') {
+            //                 document.getElementById('estera').selected = 'selected';
+            //             }
+            //             if (response.data.tipo_di_presenza == 'Giornata di formazione propria') {
+            //                 document.getElementById('formazione').selected = 'selected';
+            //             }
+            //             if (response.data.tipo_di_presenza == 'Giornata a prezzo concordato') {
+            //                 document.getElementById('concordato').selected = 'selected';
+            //             }
+            //             if (response.data.tipo_di_presenza == null) {
+            //                 document.getElementById('imp').selected = 'selected';
+            //             }
+
+            //             // In base ai dati nome bottone modifica o salva
+            //             if (!response.data.importo == '' ) {
+            //                 document.getElementById('testoBottone').innerHTML = 'Modifica';
+            //             }
+
+            //             if (response.data.importo == '') {
+            //                 document.getElementById('testoBottone').innerHTML = 'Salva';
+            //             }
+            //         })
+            //         .catch(function(error) {
+
+            //             console.log(error);
+
+            //         });
+            //     });
+            // }); --}}

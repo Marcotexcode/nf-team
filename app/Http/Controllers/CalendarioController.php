@@ -41,7 +41,7 @@ class CalendarioController extends Controller
 
     public function datiCollaboratore(Request $request)
     {
-        $collaboratore = Collaboratore::where('id', $request->idColl)->select('intera_giornata', 'mezza_giornata', 'giornata_estero' , 'giornata_formazione')->get();
+        $collaboratore = Collaboratore::where('id', $request->idCollaboratore)->select('intera_giornata', 'mezza_giornata', 'giornata_estero' , 'giornata_formazione')->get();
 
         $collaboratoreSelezionato = $collaboratore[0];
 
@@ -50,8 +50,9 @@ class CalendarioController extends Controller
 
     public function datiPresenze(Request $request)
     {
+
         $presenzeSelezionate = 0;
-        $presenzePresenti = Presenza::where('data', $request->dataPresenza)->where('collaborator_id', $request->idColl)->get();
+        $presenzePresenti = Presenza::where('data', $request->dataPresenza)->where('collaborator_id', $request->idCollaboratore)->get();
 
         if ($presenzePresenti->isEmpty()) {
             $presenzeNonPresenti = collect([
@@ -74,7 +75,6 @@ class CalendarioController extends Controller
 
         return response()->json($presenzeSelezionate);
     }
-
 
     public function creaAggiorna(Request $request)
     {
