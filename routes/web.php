@@ -61,6 +61,11 @@ Route::post('crea_aggiorna_presenza', [PresenzeController::class, 'creaAggiornaP
 
 // Calendario con ajax e vanillaJs
 Route::get('calendario/{data}', [CalendarioController::class, 'indiceCalendario'])->name('calendario.index');
+Route::post('crea_aggiorna', [CalendarioController::class, 'creaAggiorna'])->name('calendario.creaAggiorna');
+Route::get('datiColl', [CalendarioController::class, 'datiCollaboratore']);
+Route::get('datiPres', [CalendarioController::class, 'datiPresenze']);
+
+
 
 
 // Ricevute
@@ -69,7 +74,7 @@ Route::post('ricevute_filtro', [RicevuteController::class, 'filtroMese'])->name(
 Route::post('ricevute_nome', [RicevuteController::class, 'filtroNome'])->name('filtroNome');
 
 
-/* snappy  */
+/* snappy */
 Route::get('download_ricevute', [RicevuteController::class, 'downloadPDF'])->name('stampaPDF');
 
 

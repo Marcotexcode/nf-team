@@ -163,7 +163,6 @@ $( "#creaAggiornaPresenza" ).submit(function(event) {
                     }
                     let idDataCelle = $("#" + idDataPresenza).css('background-color', colore);
                 }
-
             }
         },
     });

@@ -41,9 +41,41 @@
                                                     }
 
                                                     $dataCella = $anno . '-' . $mese . '-' . $giorno;
-                                                    @endphp
+                                                    $datiCella = $collaboratore->id . '-' . $anno . '-' . $mese . '-' . $giorno;
 
-                                                    <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" class="add p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                    @endphp
+                                                    @if (array_key_exists($dataCella, $arrPresenze) && array_key_exists($collaboratore->id, $arrPresenze[$dataCella]))
+
+                                                        @php
+                                                            $rimborso = null;
+                                                            $bonus = null;
+                                                            // Condizione se seleziono bonus o rimborso mi aggiunge S o B
+                                                            if($arrPresenze[$dataCella][$collaboratore->id]->spese_rimborso) {
+                                                                $rimborso = 'S';
+                                                            }
+                                                            if($arrPresenze[$dataCella][$collaboratore->id]->bonus) {
+                                                                $bonus = 'B';
+                                                            }
+
+                                                            // Condizione che in base al tipo di data mi colora a cella
+                                                            if ($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Intera giornata") {
+                                                                $colore = 'verde';
+                                                            } elseif ($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Mezza giornata") {
+                                                                $colore = 'azzurro';
+                                                            }elseif ($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Giornata all' estero") {
+                                                                $colore = 'giallo';
+                                                            }elseif ($arrPresenze[$dataCella][$collaboratore->id]->tipo_di_presenza == "Giornata di formazione propria") {
+                                                                $colore = 'marrone';
+                                                            }else {
+                                                                $colore = 'viola';
+                                                            }
+                                                        @endphp
+
+                                                        <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add {{$colore}} p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;{{$rimborso}} {{$bonus}}</div>
+                                                    @else
+                                                        <div data-bs-toggle="modal" data-id="{{$collaboratore->id}}" data-nome="{{$collaboratore->nome}}" data-data="{{$dataCella}}" id="{{$datiCella}}" class="add p-2 datiColl" data-bs-target="#modalePresenze">&nbsp;</div>
+                                                    @endif
+
                                                 </td>
                                             @endfor
                                         </tr>
@@ -64,9 +96,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form  method="POST">
-                            <div class="form-group my-3">
-                                <input id="idCollaboratore" type="hidden" class="form-control">
+                        <form id="creaAggiorna"  method="POST">
+
+                            {{-- Id collaboratore ********--}}
+                            <div class="form-group d-none my-3">
+                                <input id="idCollaboratore" type="text" class="form-control">
                             </div>
 
                             {{-- Data iziale aggiunta con jquery --}}
@@ -81,19 +115,20 @@
                                 <input class="mb-2" type="date" name="fino_a" id="fino_a">
                             </div>
 
-                            {{-- Passo dataSelezionata --}}
-                            <div class="form-group my-3">
-                                <input id="aggiungiData" type="hidden" class="form-control">
+                            {{-- Passo dataSelezionata ********--}}
+                            <div class="form-group d-none my-3">
+                                <input id="aggiungiData" type="text" class="form-control">
                             </div>
+
                             <div class="form-group my-3">
                                 <label for="tipo_di_presenza">Tipo di presenza</label>
-                                <select class="form-control cambiaImporto" id="tipo_di_presenza">
-                                    <option value="null" select>Importo</option>
-                                    <option class="intera" data-tariffa="" value="Intera giornata">Intera giornata</option>
-                                    <option class="mezza" data-tariffa="" value="Mezza giornata">Mezza giornata</option>
-                                    <option class="estera" data-tariffa="" value="Giornata all' estero">Giornata all' estero</option>
-                                    <option class="formazione" data-tariffa="" value="Giornata di formazione propria">Giornata di formazione propria</option>
-                                    <option class="concordato">Giornata a prezzo concordato</option>
+                                <select class="form-control cambia" id="tipo_di_presenza">
+                                    <option value="null" id="imp">Importo</option>
+                                    <option id="intera" data-tariffa="" value="Intera giornata">Intera giornata</option>
+                                    <option id="mezza" data-tariffa="" value="Mezza giornata">Mezza giornata</option>
+                                    <option id="estera" data-tariffa="" value="Giornata all' estero">Giornata all' estero</option>
+                                    <option id="formazione" data-tariffa="" value="Giornata di formazione propria">Giornata di formazione propria</option>
+                                    <option id="concordato" value="Giornata a prezzo concordato">Giornata a prezzo concordato</option>
                                 </select>
                             </div>
 
@@ -122,30 +157,178 @@
                                 <input type="number" class="form-control" id="bonus">
                             </div>
                             <button type="button" id="eliminaPresenza" class="btn bottone-elimina btn-danger ">Elimina</button>
-                            <button type="submit" class="btn bottone-modifica btn-primary"></button>
+                            <button type="submit" id="testoBottone"  class="btn btn-primary"></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
 
-
         <script>
-            // Dati collaboratore
-            let datiCollaboratore = document.querySelectorAll('.datiColl');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-            for (var i = 0; i < datiCollaboratore.length; i++) {
+            // Prendere dati selezionati  e inserirli nel modale
+            // Prendo i dati di ogni cella con il foreach
+            document.querySelectorAll('.datiColl').forEach(element => {
+                // Prendo i dati che mi srvono e li salvo in una variabile
+                let nomeCollaboratore = element.dataset.nome;
+                let idCollaboratore = element.dataset.id;
+                let dataPresenza = element.dataset.data;
 
-                let nomeCollaboratore = datiCollaboratore[i].dataset.nome;
-                let idCollaboratore = datiCollaboratore[i].dataset.id;
-                let dataPresenza = datiCollaboratore[i].dataset.data;
+                // al click della cella
+                element.addEventListener('click', function(event) {
 
-                datiCollaboratore[i].addEventListener('click', function(event) {
                     var nomeColl = document.getElementById("nomeCollaboratore").textContent = nomeCollaboratore;
-                    var idColl = document.getElementById("idCollaboratore").textContent = idCollaboratore;
+                    var idColl = document.getElementById("idCollaboratore").value = idCollaboratore;
                     var dataPres = document.getElementById("aggiungiDataSpan").textContent = dataPresenza;
+                    var aggiungiDataPres = document.getElementById("aggiungiData").value = dataPresenza;
+
+
+                    var aggiungiDataPres = document.getElementById("fino_a").value = dataPresenza;
+
+
+                    // Prendo dati per la select tipo di presenza  con una chiamata axios
+                    axios.get("/datiColl", { params: { idColl } })
+                    .then(function(response) {
+                        document.getElementById('intera').setAttribute('data-tariffa', response.data.intera_giornata);
+                        document.getElementById('mezza').setAttribute('data-tariffa', response.data.mezza_giornata);
+                        document.getElementById('estera').setAttribute('data-tariffa', response.data.giornata_estero);
+                        document.getElementById('formazione').setAttribute('data-tariffa', response.data.giornata_formazione);
+                    })
+                    .catch(function(error) {
+
+                        console.log(error);
+
+                    });
+
+                    // Prendo dati presenze
+                    axios.get("/datiPres", { params: { idColl, dataPresenza } })
+                    .then(function(response) {
+
+                        document.getElementById('luogo').setAttribute('value', response.data.luogo);
+                        document.getElementById('importo').setAttribute('value', response.data.importo);
+                        document.getElementById('idCollaboratore').setAttribute('value', response.data.collaborator_id);
+                        document.getElementById('aggiungiData').setAttribute('value', response.data.data);
+                       // document.getElementById('tipo_di_presenza').setAttribute('value', response.data.tipo_di_presenza); // non lo prende
+                        document.getElementById('descrizione').innerHTML = response.data.descrizione;
+                        document.getElementById('spese_rimborso').setAttribute('value', response.data.spese_rimborso);
+                        document.getElementById('bonus').setAttribute('value', response.data.bonus);
+                        document.getElementById('fino_a').setAttribute('value', response.data.luogo);
+
+                        // Il tipo di presenza nella modifica
+                        if (response.data.tipo_di_presenza == 'Intera giornata') {
+                            document.getElementById('intera').selected = 'selected';
+                        }
+                        if(response.data.tipo_di_presenza == 'Mezza giornata') {
+                            document.getElementById('mezza').selected = 'selected';
+                        }
+                        if (response.data.tipo_di_presenza == 'Giornata all\' estero') {
+                            document.getElementById('estera').selected = 'selected';
+                        }
+                        if (response.data.tipo_di_presenza == 'Giornata di formazione propria') {
+                            document.getElementById('formazione').selected = 'selected';
+                        }
+                        if (response.data.tipo_di_presenza == 'Giornata a prezzo concordato') {
+                            document.getElementById('concordato').selected = 'selected';
+                        }
+                        if (response.data.tipo_di_presenza == null) {
+                            document.getElementById('imp').selected = 'selected';
+                        }
+
+                        // In base ai dati nome bottone modifica o salva
+                        if (!response.data.importo == '' ) {
+                            document.getElementById('testoBottone').innerHTML = 'Modifica';
+                        }
+
+                        if (response.data.importo == '') {
+                            document.getElementById('testoBottone').innerHTML = 'Salva';
+                        }
+                    })
+                    .catch(function(error) {
+
+                        console.log(error);
+
+                    });
                 });
-            }
+            });
+
+            // Cambio importo
+            document.querySelector('.cambia').addEventListener('change',function(){
+                if (document.getElementById('tipo_di_presenza').options[this.selectedIndex].value == 'Giornata a prezzo concordato') {
+                    document.querySelector('.importo').removeAttribute("value");
+                    document.querySelector('.importo').disabled = false;
+                } else {
+                    document.querySelector('.importo').setAttribute("value", document.getElementById('tipo_di_presenza').options[this.selectedIndex].dataset.tariffa);
+                    document.querySelector('.importo').disabled = true;
+                }
+            });
+
+            // Inviare dati con vanilla e axios
+            document.querySelector("#creaAggiorna").addEventListener("submit", function(e){
+                e.preventDefault();
+
+                axios.post("/crea_aggiorna", {
+                        luogo: document.getElementById('luogo').value,
+                        importo: document.getElementById('importo').value,
+                        idColl: document.getElementById('idCollaboratore').value,
+                        data: document.getElementById('aggiungiData').value,
+                        tipoPresenza: document.getElementById('tipo_di_presenza').value,
+                        descrizione: document.getElementById('descrizione').value,
+                        speseRimborso: document.getElementById('spese_rimborso').value,
+                        bonus: document.getElementById('bonus').value,
+                        finoA: document.getElementById('fino_a').value,
+                    })
+                .then(function(response) {
+                    if (response.status == 200) {
+                        $('#modalePresenze').modal('hide');
+                    }
+
+                    let idDataPresenza = 0;
+                    console.log(response.data);
+                    for(var i=0; i < response.data.length; i++){
+                        // Creo una variabile uguale all'id che ho messo nel div cella
+                        idDataPresenza = response.data[i].collaborator_id + '-' + response.data[i].data;
+
+                        let colore = 0;
+                        if (response.data[i].tipo_di_presenza == 'Intera giornata') {
+                            colore = '#35964b';
+                        }
+                        if(response.data[i].tipo_di_presenza == 'Mezza giornata') {
+                            colore = '#68aeca';
+                        }
+                        if(response.data[i].tipo_di_presenza == 'Giornata all\' estero') {
+                            colore = '#c7c422';
+                        }
+                        if(response.data[i].tipo_di_presenza == 'Giornata di formazione propria') {
+                            colore = '#757442';
+                        }
+                        if(response.data[i].tipo_di_presenza == 'Giornata a prezzo concordato') {
+                            colore = '#7e467e';
+                        }
+                        if (response.data[i].spese_rimborso) {
+                            document.getElementById(idDataPresenza).innerHTML = 'S';
+                        }
+                        if (response.data[i].bonus) {
+                            document.getElementById(idDataPresenza).innerHTML = 'B';
+                        }
+                        if (response.data[i].spese_rimborso && response.data[i].bonus) {
+                            document.getElementById(idDataPresenza).innerHTML = 'SB';
+                        }
+                        //prendere l'id con il dato presenza
+                        document.getElementById(idDataPresenza).style.backgroundColor  = colore;
+                    }
+
+                })
+                .catch(function(error) {
+
+                    console.log(error);
+                });
+
+            });
 
         </script>
     </div>
