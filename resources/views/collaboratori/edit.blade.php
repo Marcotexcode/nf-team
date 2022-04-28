@@ -17,7 +17,7 @@
                     @endif
                     <div class="card-body">
 
-                        <form action="{{ route('collaboratori.update', $collaboratore->id) }}" method="POST">
+                        <form action="{{ route('collaboratore.update', $collaboratore->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">

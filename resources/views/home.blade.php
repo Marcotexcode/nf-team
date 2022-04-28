@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2 class="text-center mt-5">Salve {{$nomeUtente}}</h2>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">
+                    Benvenuto
+                    @if (Auth::user())
+                        {{Auth::user()->name}}
+                    @else
+                        anonimo
+                    @endif
+                </h2>
+            </div>
         </div>
     </div>
-</div>
 @endsection

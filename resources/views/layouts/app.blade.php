@@ -68,18 +68,18 @@
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{'/register'}}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item ">
+                            <li class="nav-item">
                                 <a id="navbarDropdown" class="nav-link" href="{{ route('presenze.index', $data )}}">
-                                    Presenze
+                                    Presenze Jquery
                                 </a>
                             </li>
-                            <li class="nav-item ">
+                            <li class="nav-item">
                                 <a id="navbarDropdown" class="nav-link" href="{{ route('calendario.index', $data )}}">
-                                    Calendario
+                                    Presenze VanillaJS
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
@@ -109,7 +109,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('collaboratori.index') }}">
-                                       Collaboratori
+                                    Collaboratori
                                     </a>
                                     @can('administer')
                                         <a class="dropdown-item" href="{{ route('utenti.index') }}">
@@ -129,9 +129,17 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" href="{{ route('profilo.index') }}">
+                                        Modifica Profilo
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('secondo.fattore') }}">
+                                        Attiva/Disattiva Fattore
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <a class="btn btn-success" href="{{ route('utenti.create') }}">Nuovo utente</a>
+        <a class="btn btn-success" href="{{ route('utente.create') }}">Nuovo utente</a>
         <table class="table">
             <thead>
               <tr>
@@ -18,9 +18,9 @@
                     <th scope="row">{{$utente->id}}</th>
                     <td>{{$utente->name}}</td>
                     <td>{{$utente->email}}</td>
-                    <form action="{{route('utenti.destroy', $utente->id)}}" method="POST">
+                    <form action="{{route('utente.destroy', $utente->id)}}" method="POST">
                         <td>
-                            <a class="btn btn-primary" href="{{ route('utenti.edit', $utente->id) }}">Modifica</a>
+                            <a class="btn btn-primary" href="{{ route('utente.edit', $utente->id) }}">Modifica</a>
                         </td>
                         @csrf
                         @method('DELETE')

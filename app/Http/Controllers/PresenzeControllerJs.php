@@ -9,9 +9,9 @@ use App\Models\Presenza;
 use Carbon\Carbon;
 
 
-class CalendarioController extends Controller
+class PresenzeControllerJs extends Controller
 {
-    public function indiceCalendario($data)
+    public function index($data)
     {
         $data = Carbon::createFromDate("$data");
         $dataInizio = Carbon::createFromDate("$data")->startOfMonth();

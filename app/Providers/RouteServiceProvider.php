@@ -17,8 +17,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
-    //public const PRESENZE = '/presenze/{data}';
+    public const HOME = '/';
+    // public const REGISTER = '/logg';
+    // public const LOGGATO = '/logg';
 
 
     /**
@@ -48,6 +49,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+                //'routes/web.php'
         });
     }
 

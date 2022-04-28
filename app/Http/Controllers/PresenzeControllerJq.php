@@ -10,9 +10,9 @@ use App\Models\Collaboratore;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
-class PresenzeController extends Controller
+class PresenzeControllerJq extends Controller
 {
-    public function indicePresenze($data)
+    public function index($data)
     {
         session()->forget('filtriDate');
         $collaboratori = Collaboratore::all();

@@ -17,6 +17,32 @@ class CollaboratoriController extends Controller
         return view('collaboratori.index', compact('collaboratori'));
     }
 
+    public function create()
+    {
+        return view('collaboratori.store');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate ([
+            'nome' => 'required',
+            'cognome' => 'required',
+            'email' => 'required',
+            'telefono' => 'required',
+            'citta' => 'required',
+            'indirizzo' => 'required',
+            'CAP' => 'required',
+            'intera_giornata' => 'required',
+            'mezza_giornata' => 'required',
+            'giornata_estero' => 'required',
+            'giornata_formazione' => 'required'
+        ]);
+
+        Collaboratore::create($request->all());
+
+        return redirect()->route('collaboratori.index');
+    }
+
     public function edit(Collaboratore $collaboratore)
     {
         return view('collaboratori.edit', compact('collaboratore'));
@@ -50,31 +76,9 @@ class CollaboratoriController extends Controller
         return redirect()->route('collaboratori.index');
     }
 
-    public function create()
-    {
-        return view('collaboratori.store');
-    }
 
 
-    public function store(Request $request)
-    {
-        $request->validate ([
-            'nome' => 'required',
-            'cognome' => 'required',
-            'email' => 'required',
-            'telefono' => 'required',
-            'citta' => 'required',
-            'indirizzo' => 'required',
-            'CAP' => 'required',
-            'intera_giornata' => 'required',
-            'mezza_giornata' => 'required',
-            'giornata_estero' => 'required',
-            'giornata_formazione' => 'required'
-        ]);
 
-        Collaboratore::create($request->all());
 
-        return redirect()->route('collaboratori.index');
-    }
 
 }

@@ -15,7 +15,7 @@
                         </div>
                     @endif
                     <div class="card-body">
-                        <form action="{{route('utenti.store')}}" method="POST">
+                        <form action="{{route('utente.store')}}" method="POST">
                             @csrf
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Nome</label>
