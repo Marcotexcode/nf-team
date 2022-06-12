@@ -252,7 +252,7 @@
                 }
             });
 
-            // Inviare dati con  axios
+            // Inviare dati con axios
             document.querySelector("#creaAggiorna").addEventListener("submit", function(e){
                 e.preventDefault();
 
@@ -268,12 +268,13 @@
                     finoA: document.getElementById('fino_a').value,
                 })
                 .then(function(response) {
-                        $('#modalePresenze').modal('hide');
+                    $('#modalePresenze').modal('hide');
 
                     let idDataPresenza = 0;
 
                     for(var i=0; i < response.data.length; i++){
                         // Creo una variabile uguale all'id che ho messo nel div cella
+                        //Il cui valore e uguale all id $datiCella
                         idDataPresenza = response.data[i].collaborator_id + '-' + response.data[i].data;
 
                         let colore = 0;

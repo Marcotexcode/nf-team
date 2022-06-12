@@ -50,7 +50,6 @@ class PresenzeControllerJs extends Controller
 
     public function datiPresenze(Request $request)
     {
-
         $presenzeSelezionate = 0;
         $presenzePresenti = Presenza::where('data', $request->dataPresenza)->where('collaborator_id', $request->idCollaboratore)->get();
 

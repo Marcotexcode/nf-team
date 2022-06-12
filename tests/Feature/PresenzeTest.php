@@ -69,9 +69,9 @@ class PresenzeTest extends TestCase
                 'bonus' => '5.00',
             ]);
         }
+
         // Afferma che la struttura della risposta json sia giusta
         $response->assertJsonStructure([[ "data", ]]);
-
 
         // Un altro modo per vedere se la struttura e i dati sono uguali
         for ($i=$dataInizio; $i <= $dataFine; $i++) {
